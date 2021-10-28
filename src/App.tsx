@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
 import {v1} from "uuid";
+import AddItemForm from "./AddItemForm";
 
 
 export type FilterValueType = "all" | "active" | "completed"
@@ -22,43 +23,42 @@ function App() {
     ])
 
     let [tasks, setTasks] = useState({
-        [todolistId1]:[{id: v1(), title: "HTML", isDone: true},
-        {id: v1(), title: "CSS", isDone: false},
-        {id: v1(), title: "HTML", isDone: true},
-        {id: v1(), title: "HTML", isDone: false},
-        {id: v1(), title: "HTML", isDone: true}
-    ],
-        [todolistId2]:[{id: v1(), title: "HTML", isDone: true},
+        [todolistId1]: [{id: v1(), title: "HTML", isDone: true},
             {id: v1(), title: "CSS", isDone: false},
             {id: v1(), title: "HTML", isDone: true},
             {id: v1(), title: "HTML", isDone: false},
             {id: v1(), title: "HTML", isDone: true}
-    ]})
+        ],
+        [todolistId2]: [{id: v1(), title: "HTML", isDone: true},
+            {id: v1(), title: "CSS", isDone: false},
+            {id: v1(), title: "HTML", isDone: true},
+            {id: v1(), title: "HTML", isDone: false},
+            {id: v1(), title: "HTML", isDone: true}
+        ]
+    })
 
-    function removeTask(id: string,todolistId:string) {
+    function removeTask(id: string, todolistId: string) {
         let filteredTask = tasks[todolistId].filter(f => f.id !== id)
-        tasks[todolistId]=filteredTask
+        tasks[todolistId] = filteredTask
         setTasks({...tasks})
 
     }
 
-    function changeFilter(value: FilterValueType,todolistId:string) {
-        let todolist=todolists.find(f=>f.id===todolistId)
-        if(todolist) {
-            todolist.filter=value
+    function changeFilter(value: FilterValueType, todolistId: string) {
+        let todolist = todolists.find(f => f.id === todolistId)
+        if (todolist) {
+            todolist.filter = value
             setTodolists([...todolists])
         }
-
-
     }
 
-    function addTask(title: string,todolistId:string) {
+    function addTask(title: string, todolistId: string) {
         let newTask = {id: v1(), title: title, isDone: false}
-        tasks[todolistId]=[newTask,...tasks[todolistId]]
+        tasks[todolistId] = [newTask, ...tasks[todolistId]]
         setTasks({...tasks})
     }
 
-    function changeStatus(id: string, isDone: boolean,todolistId:string) {
+    function changeStatus(id: string, isDone: boolean, todolistId: string) {
         let task = tasks[todolistId].find(f => f.id === id)
         if (task) {
             task.isDone = isDone
@@ -67,16 +67,42 @@ function App() {
 
 
     }
-    function removeTodolist(todolistId:string){
-        let todolist=todolists.filter(f=>f.id!==todolistId)
+
+    function removeTodolist(todolistId: string) {
+        let todolist = todolists.filter(f => f.id !== todolistId)
         setTodolists(todolist)
         delete tasks[todolistId]
         setTasks({...tasks})
 
     }
 
+    function addTodolist(title: string) {
+        let newTodolist:TodolistType = {id:v1(), title: title, filter: "all"}
+       setTodolists([newTodolist,...todolists])
+        setTasks({...tasks,
+        [newTodolist.id]:[]})
+
+
+    }
+    function changeTitle(id:string,newTitle:string,todolistId:string){
+let todolistTitle=tasks[todolistId].find(f=>f.id===id)
+        if(todolistTitle){
+            todolistTitle.title=newTitle
+            setTasks({...tasks})
+        }
+
+    }
+function changeTodolistTitle(id:string,newTitle:string){
+        let todolistTitle=todolists.find(f=>f.id===id)
+    if(todolistTitle){
+        todolistTitle.title=newTitle
+        setTodolists([...todolists])
+    }
+}
+
     return (
         <div className="App">
+            <AddItemForm addItem={addTodolist}/>
             {
                 todolists.map((m) => {
 
@@ -98,7 +124,10 @@ function App() {
                         addTask={addTask}
                         changeStatus={changeStatus}
                         filter={m.filter}
-                        removeTodolist={removeTodolist}/>
+                        removeTodolist={removeTodolist}
+                        changeTitle={changeTitle}
+                        changeTodolistTitle={changeTodolistTitle}
+                    />
 
                 })
             }
