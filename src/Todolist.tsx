@@ -1,7 +1,7 @@
 import React, {ChangeEvent} from "react";
 import {FilterValueType} from "./App";
-import AddItemForm from "./AddItemForm";
-import EditableSpan from "./EditableSpan";
+import AddItemForm from "./components/AddItemForm";
+import EditableSpan from "./components/EditableSpan";
 import {Button, ButtonGroup, Checkbox, IconButton, List, ListItem} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 
@@ -40,7 +40,7 @@ export function Todolist(props: PropsType) {
 
     return (
         <div>
-            <h3><EditableSpan title={props.title} onChange={onchangeTitle}/>
+            <h3><EditableSpan title={props.title} onChange={onchangeTitle} />
                 <IconButton color={"inherit"}>
                     <Delete onClick={() => {removeTodolist()}}/>
                 </IconButton>
@@ -60,11 +60,11 @@ export function Todolist(props: PropsType) {
                         const onChangeTitleHandler = (newTitle: string) => {
                             props.changeTitle(m.id, newTitle, props.id)
                         }
-                        return <ListItem key={m.id} className={m.isDone ? "is_done" : ""}><Checkbox  defaultChecked color="primary"  checked={m.isDone}
+                        return <ListItem  key={m.id} className={m.isDone ? "is_done" : ""}><Checkbox   defaultChecked color="primary"  checked={m.isDone}
                                                                                                     onChange={onChangeStatusHandler}/>
 
 
-                            <span><EditableSpan title={m.title} onChange={onChangeTitleHandler}/></span>
+                            <span ><EditableSpan title={m.title} onChange={onChangeTitleHandler} /></span>
                             <IconButton >
                                 <Delete onClick={onClickHandler}/>
                             </IconButton>

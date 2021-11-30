@@ -26,7 +26,7 @@ let onChangeTitleHandler=(e:ChangeEvent<HTMLInputElement>)=>{
 }
 
     return  editMode
-            ? <TextField value={title} onChange={onChangeTitleHandler} onBlur={activeViewMode} autoFocus />
+            ? <TextField value={title} onChange={onChangeTitleHandler} onBlur={activeViewMode} autoFocus  />
         : <span onDoubleClick={activeEditMode} >{props.title}
         <IconButton size={"small"}>
             <Edit/>

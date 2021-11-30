@@ -2,14 +2,14 @@ import React, {useState} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
 import {v1} from "uuid";
-import AddItemForm from "./AddItemForm";
+import AddItemForm from "./components/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 
 
 export type FilterValueType = "all" | "active" | "completed"
 
-type TodolistType = {
+export type TodolistType = {
     id: string
     title: string
     filter: FilterValueType
@@ -121,7 +121,7 @@ function App() {
             </AppBar>
             <Container fixed>
                 <Grid container style={{padding:"10px"}}>
-                    <AddItemForm addItem={addTodolist}/>
+                    <AddItemForm addItem={addTodolist} />
                 </Grid>
                 <Grid container spacing={3}>
                     {
@@ -135,7 +135,7 @@ function App() {
                                 taskForTodolist = tasks[m.id].filter(f => !f.isDone)
                             }
 
-                            return <Grid item>
+                            return <Grid item >
                                 <Paper style={{padding:"10px"}}>
                             <Todolist
                                 key={m.id}
