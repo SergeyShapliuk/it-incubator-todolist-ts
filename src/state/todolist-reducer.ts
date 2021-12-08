@@ -36,21 +36,21 @@ type ActionsTypes =
 const todolistReducer = (state: TodolistType[], action: ActionsTypes): TodolistType[] => {
     switch (action.type) {
         case CHANGE_FILTER: {
-            const todolist = state.find(f => f.id === action.todolistId)
-            if (todolist) {
-                todolist.filter = action.value
-            }
-            return [...state]
+            // const todolist = state.find(f => f.id === action.todolistId)
+            // if (todolist) {
+            //     todolist.filter = action.value
+            // }
+            return [...state.map(m=>m.id===action.todolistId?{...m,filter:action.value}:m)]
         }
         case REMOVE_TODOLIST: {
-            return state.filter(f => f.id !== action.todolistId)
+            return [...state.filter(f => f.id !== action.todolistId)]
         }
         case CHANGE_TODOLIST_TITLE: {
-            const todolistTitle = state.find(f => f.id === action.id)
-            if (todolistTitle) {
-                todolistTitle.title = action.newTitle
-            }
-            return [...state]
+            // const todolistTitle = state.find(f => f.id === action.id)
+            // if (todolistTitle) {
+            //     todolistTitle.title = action.newTitle
+            // }
+            return [...state.map(m=>m.id===action.id?{...m,title:action.newTitle}:m)]
         }
         case ADD_TODOLIST: {
             const newTodolist: TodolistType = {id: action.todolistId, title: action.title, filter: "all"}

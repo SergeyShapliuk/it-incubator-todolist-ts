@@ -24,7 +24,6 @@ type ChangeTitleActionType = {
     newTitle: string
     todolistId: string
 }
-type AddTodolistActionType = {}
 
 
 type ActionsTypes =
@@ -38,32 +37,33 @@ type ActionsTypes =
 const tasksReducer = (state: TasksStateType, action: ActionsTypes): TasksStateType => {
     switch (action.type) {
         case "REMOVE-TASK": {
-            let filteredTask = state[action.todolistId].filter(f => f.id !== action.id)
-            state[action.todolistId] = filteredTask
-            return {...state}
+            // let filteredTask = state[action.todolistId].filter(f => f.id !== action.id)
+            // state[action.todolistId] = filteredTask
+            // return {...state}
+            return {...state,[action.todolistId]:state[action.todolistId].filter(f=>f.id!==action.id)}
         }
         case "ADD-TASK": {
             let newTask = {id: v1(), title: action.title, isDone: false}
-            state[action.todolistId] = [newTask, ...state[action.todolistId]]
-            return {...state}
+           // state[action.todolistId] = [newTask, ...state[action.todolistId]]
+            return {...state,[action.todolistId]:[newTask,...state[action.todolistId]]}
         }
         case "CHANGE-STATUS": {
-            let task = state[action.todolistId].find(f => f.id === action.id)
-            if (task) {
-                task.isDone = action.isDone
-            }
-            return {...state}
+            // let task = state[action.todolistId].find(f => f.id === action.id)
+            // if (task) {
+            //     task.isDone = action.isDone
+            // }
+            return {...state,[action.todolistId]:state[action.todolistId].map(f=>f.id===action.id?{...f,isDone:action.isDone}:f)}
         }
         case "CHANGE-TITLE": {
-            let todolistTitle = state[action.todolistId].find(f => f.id === action.id)
-            if (todolistTitle) {
-                todolistTitle.title = action.newTitle
-            }
-            return {...state}
+            // let todolistTitle = state[action.todolistId].find(f => f.id === action.id)
+            // if (todolistTitle) {
+            //     todolistTitle.title = action.newTitle
+            // }
+            return {...state,[action.todolistId]:state[action.todolistId].map(f=>f.id===action.id?{...f,title:action.newTitle}:f)}
         }
         case "ADD-TODOLIST": {
-            state[action.todolistId] = []
-            return {...state}
+            //state[action.todolistId] = []
+            return {...state,[action.todolistId]:[]}
         }
         case "REMOVE-TODOLIST":{
            delete state[action.todolistId]
