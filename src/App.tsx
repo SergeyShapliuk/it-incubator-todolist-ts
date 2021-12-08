@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
-import {Todolist} from "./Todolist";
+import {PropsTaskType, Todolist} from "./Todolist";
 import {v1} from "uuid";
 import AddItemForm from "./components/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
@@ -14,6 +14,9 @@ export type TodolistType = {
     title: string
     filter: FilterValueType
 }
+export type TasksStateType={
+    [key:string]:PropsTaskType[]
+}
 
 function App() {
     let todolistId1 = v1()
@@ -24,7 +27,7 @@ function App() {
         {id: todolistId2, title: "What to buy", filter: "all"}
     ])
 
-    let [tasks, setTasks] = useState({
+    let [tasks, setTasks] = useState<TasksStateType>({
         [todolistId1]: [{id: v1(), title: "HTML", isDone: true},
             {id: v1(), title: "CSS", isDone: false},
             {id: v1(), title: "HTML", isDone: true},

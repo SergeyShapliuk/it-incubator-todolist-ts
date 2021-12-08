@@ -7,7 +7,7 @@ import {Delete} from "@material-ui/icons";
 
 
 
-type PropsTaskType = {
+export type PropsTaskType = {
     id: string
     title: string
     isDone: boolean
