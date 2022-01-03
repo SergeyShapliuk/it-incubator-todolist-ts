@@ -1,5 +1,6 @@
 import {v1} from "uuid";
-import {AddTodolistAC, RemoveTodolistAC, todolistId1, todolistId2} from "./todolist-reducer";
+import {AddTodolistAC, RemoveTodolistAC} from "./todolist-reducer";
+import {TasksStateType} from "../AppWithRedux";
 
 
 type RemoveTaskActionType = {
@@ -34,19 +35,8 @@ type ActionsTypes =
     | ReturnType<typeof AddTodolistAC>
     | ReturnType<typeof RemoveTodolistAC>
 
-const initialState={
-    [todolistId1]: [{id: v1(), title: "HTML", isDone: true},
-        {id: v1(), title: "CSS", isDone: false},
-        {id: v1(), title: "HTML", isDone: true},
-        {id: v1(), title: "HTML", isDone: false},
-        {id: v1(), title: "HTML", isDone: true}
-    ],
-    [todolistId2]: [{id: v1(), title: "HTML", isDone: true},
-        {id: v1(), title: "CSS", isDone: false},
-        {id: v1(), title: "HTML", isDone: true},
-        {id: v1(), title: "HTML", isDone: false},
+const initialState:TasksStateType={
 
-    ]
 }
 
  export type initialTasksStateType=typeof initialState
