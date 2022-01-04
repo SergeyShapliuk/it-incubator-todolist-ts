@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
-import './App.css';
-import Todolist, {PropsTaskType} from "./Todolist";
-import AddItemForm from "./components/AddItemForm";
+import '../../App.css';
+import Todolist, {PropsTaskType} from "../todolist/Todolist";
+import AddItemForm from "../addItemForm/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {
@@ -9,10 +9,10 @@ import {
     ChangeFilterAC,
     ChangeTodolistTitleAC,
     RemoveTodolistAC
-} from "./state/todolist-reducer";
-import {addTaskAC, changeStatusAC, changeTitleAC, initialTasksStateType, removeTaskAC} from "./state/tasks-reducer";
+} from "../../state/todolist-reducer";
+import {addTaskAC, changeStatusAC, changeTitleAC, initialTasksStateType, removeTaskAC} from "../../state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {RootStoreType} from "./state/store";
+import {RootStoreType} from "../../state/store";
 
 
 export type FilterValueType = "all" | "active" | "completed"

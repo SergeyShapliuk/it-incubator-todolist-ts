@@ -1,10 +1,10 @@
 import React, {useCallback} from "react";
-import AddItemForm from "./components/AddItemForm";
-import EditableSpan from "./components/EditableSpan";
+import AddItemForm from "../addItemForm/AddItemForm";
+import EditableSpan from "../EditableSpan";
 import {Button, ButtonGroup, IconButton, List} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import {FilterValueType} from "./AppWithRedux";
-import {Task} from "./Task";
+import {FilterValueType} from "../appWithRedux/AppWithRedux";
+import {Task} from "../task/Task";
 
 
 export type PropsTaskType = {
@@ -66,9 +66,7 @@ const Todolist = React.memo((props: PropsType) => {
                                      changeTitle={props.changeTitle}
                                      todolistId={props.id}
                                      task={m}
-                                     key={m.id}
-                                     title={m.title}
-                                     isDone={m.isDone}/>
+                                     key={m.id}/>
                     })
                 }
             </List>

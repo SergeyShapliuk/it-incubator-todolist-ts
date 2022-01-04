@@ -1,6 +1,6 @@
 
 import {v1} from "uuid";
-import {FilterValueType, TodolistType} from "../AppWithRedux";
+import {FilterValueType, TodolistType} from "../components/appWithRedux/AppWithRedux";
 
 const CHANGE_FILTER = "CHANGE-FILTER"
 const REMOVE_TODOLIST = "REMOVE-TODOLIST"
