@@ -7,7 +7,11 @@ import {action} from "@storybook/addon-actions";
 export default {
     title: 'Todolist/AddItemForm',
     component: AddItemForm,
-
+    argTypes:{
+        addItem:{
+            description:"Button clicked inside form",
+        },
+    }
 } as ComponentMeta<typeof AddItemForm>;
 
 const Template: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...args} />;
