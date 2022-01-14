@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react'
-import {todolistTaskApi} from "./todolist-task-api";
+import {taskApi} from "./todolist-task-api";
+
+
 
 
 export default {
-    title: 'API/TODOLIST'
+    title: 'API/TASK'
 }
 // const instant=axios.create({
 //     withCredentials:true,
@@ -13,10 +15,11 @@ export default {
 //     }
 // })
 
-export const GetTodolists = () => {
+export const GetTasks = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        todolistTaskApi.getTodolist()
+        const todolistId="46f6c73b-6961-440e-86a6-60976039ee98"
+        taskApi.getTask(todolistId)
             .then(response=>setState(response))
         // здесь мы будем делать запрос и ответ закидывать в стейт.
         // который в виде строки будем отображать в div-ке
@@ -25,32 +28,35 @@ export const GetTodolists = () => {
 
     return <div> {JSON.stringify(state)}</div>
 }
-export const CreateTodolist = () => {
+export const CreateTasks = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        const title='first todolist'
-        todolistTaskApi.createTodolist(title)
+        const todolistId="46f6c73b-6961-440e-86a6-60976039ee98"
+        const title='first task'
+        taskApi.createTask(todolistId,title)
             .then(response=>setState(response))
     }, [])
 
     return <div> {JSON.stringify(state)}</div>
 }
-export const DeleteTodolist = () => {
+export const DeleteTask = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        const todolistId="9e99c60d-7a28-463b-9d7b-64ea7d89dac2"
-        todolistTaskApi.deleteTodolist(todolistId)
+        const todolistId="46f6c73b-6961-440e-86a6-60976039ee98"
+        const taskId="ebe482de-a36c-46c8-b008-2f7695116ddd"
+        taskApi.deleteTask(todolistId,taskId)
             .then(response=>setState(response))
     }, [])
 
     return <div> {JSON.stringify(state)}</div>
 }
-export const UpdateTodolistTitle = () => {
+export const UpdateTaskTitle = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        const todolistId=''
-        const title='second todolist'
-        todolistTaskApi.updateTodolist(todolistId,title)
+        const todolistId="46f6c73b-6961-440e-86a6-60976039ee98"
+        const taskId="ebe482de-a36c-46c8-b008-2f7695116ddd"
+        const title='second task'
+        taskApi.updateTask(todolistId,taskId,title)
             .then(response=>setState(response))
     }, [])
 
