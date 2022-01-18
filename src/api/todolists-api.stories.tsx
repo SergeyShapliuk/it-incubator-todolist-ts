@@ -38,7 +38,7 @@ export const CreateTodolist = () => {
 export const DeleteTodolist = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        const todolistId="9e99c60d-7a28-463b-9d7b-64ea7d89dac2"
+        const todolistId="46f6c73b-6961-440e-86a6-60976039ee98"
         todolistTaskApi.deleteTodolist(todolistId)
             .then(response=>setState(response))
     }, [])

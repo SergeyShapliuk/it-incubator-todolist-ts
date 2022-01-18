@@ -9,7 +9,7 @@ const instant = axios.create({
     }
 });
 
-type TodolistType = {
+export type TodolistType = {
     id: string
     title: string
     addedDate: string
@@ -20,7 +20,21 @@ type TodolistResponseType<D={}>={
     messages: string[]
     data: D
 };
-type TaskType={
+export enum TaskStatuses{
+    New,
+    InProgress,
+    Completed,
+    Draft
+}
+export enum TaskPriorities{
+    Low,
+    Middle,
+    Hi,
+    Urgently,
+    Later
+
+}
+export type TaskType={
     description: string
     title: string
     completed: boolean
@@ -47,7 +61,7 @@ type CreateTaskType={
 
 
 };
-type UpdateTaskType={
+export type UpdateTaskType={
     title: string
     description: string
     completed: boolean

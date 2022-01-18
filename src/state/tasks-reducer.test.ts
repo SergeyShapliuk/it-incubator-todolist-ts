@@ -1,99 +1,55 @@
 import tasksReducer, {addTaskAC, changeStatusAC, changeTitleAC, removeTaskAC} from "./tasks-reducer";
 import {AddTodolistAC, RemoveTodolistAC} from "./todolist-reducer";
-import {TasksStateType} from "../App";
 
+import {TaskPriorities, TaskStatuses} from "../api/todolist-task-api";
 
+let startState = {};
+beforeEach(()=>{
+    startState={
+    "todolistId1": [
+        {id: "1", title: "CSS",  status:TaskStatuses.New,todoListId:"todolistId1",description:"",startDate:"",deadline:"",addedDate:"",order:0, priority:TaskPriorities.Low,completed:false},
+        {id: "2", title: "HTML", status:TaskStatuses.Completed,todoListId:"todolistId1",description:"",startDate:"",deadline:"",addedDate:"",order:0, priority:TaskPriorities.Low,completed:false},
+        {id: "3", title: "HTML",status:TaskStatuses.New,todoListId:"todolistId1",description:"",startDate:"",deadline:"",addedDate:"",order:0, priority:TaskPriorities.Low,completed:false},
+    ],
+    "todolistId2": [
+        {id: "1", title: "CSS", status:TaskStatuses.Completed,todoListId:"todolistId2",description:"",startDate:"",deadline:"",addedDate:"",order:0, priority:TaskPriorities.Low,completed:false},
+        {id: "2", title: "HTML", status:TaskStatuses.New,todoListId:"todolistId2",description:"",startDate:"",deadline:"",addedDate:"",order:0, priority:TaskPriorities.Low,completed:false},
+        {id: "3", title: "HTML", status:TaskStatuses.Completed,todoListId:"todolistId2",description:"",startDate:"",deadline:"",addedDate:"",order:0, priority:TaskPriorities.Low,completed:false},
+
+    ]}
+
+});
 test("RemoveTask", () => {
-    let startState = {
-        "todolistId1": [
-            {id: "1", title: "CSS", isDone: false},
-            {id: "2", title: "HTML", isDone: true},
-            {id: "3", title: "HTML", isDone: false},
-            {id: "4", title: "HTML", isDone: true}
-        ],
-        "todolistId2": [
-            {id: "1", title: "CSS", isDone: false},
-            {id: "2", title: "HTML", isDone: true},
-            {id: "3", title: "HTML", isDone: false},
-            {id: "4", title: "HTML", isDone: true}
-        ]
-    }
-
-
     const action = removeTaskAC("2", "todolistId2")
     const removeTaskState = tasksReducer(startState, action)
 
-    expect(removeTaskState["todolistId1"].length).toBe(4)
-    expect(removeTaskState["todolistId2"].length).toBe(3)
+    expect(removeTaskState["todolistId1"].length).toBe(3)
+    expect(removeTaskState["todolistId2"].length).toBe(2)
 
 
 });
 test("addTask", () => {
-    let startState = {
-        "todolistId1": [
-            {id: "1", title: "CSS", isDone: false},
-            {id: "2", title: "HTML", isDone: true},
-            {id: "3", title: "HTML", isDone: false},
-            {id: "4", title: "HTML", isDone: true}
-        ],
-        "todolistId2": [
-            {id: "1", title: "CSS", isDone: false},
-            {id: "2", title: "HTML", isDone: true},
-            {id: "3", title: "HTML", isDone: false},
-            {id: "4", title: "HTML", isDone: true}
-        ]
-    }
-
 
     const action = addTaskAC("New Task", "todolistId2")
     const addTaskState = tasksReducer(startState, action)
 
-    expect(addTaskState["todolistId2"].length).toBe(5)
-    expect(addTaskState["todolistId1"].length).toBe(4)
+    expect(addTaskState["todolistId2"].length).toBe(4)
+    expect(addTaskState["todolistId1"].length).toBe(3)
     expect(addTaskState["todolistId2"][0].title).toBe("New Task")
 
 
 });
 test("ChangeStatus", () => {
-    let startState = {
-        "todolistId1": [
-            {id: "1", title: "CSS", isDone: false},
-            {id: "2", title: "HTML", isDone: true},
-            {id: "3", title: "HTML", isDone: false},
-            {id: "4", title: "HTML", isDone: true}
-        ],
-        "todolistId2": [
-            {id: "1", title: "CSS", isDone: false},
-            {id: "2", title: "HTML", isDone: true},
-            {id: "3", title: "HTML", isDone: false},
-            {id: "4", title: "HTML", isDone: true}
-        ]
-    }
 
-
-    const action = changeStatusAC("2", false, "todolistId2")
+    const action = changeStatusAC("2", TaskStatuses.New, "todolistId2")
     const changeStatusState = tasksReducer(startState, action)
 
-    expect(changeStatusState["todolistId2"][1].isDone).toBe(false)
-    expect(changeStatusState["todolistId2"][0].isDone).toBe(false)
+    expect(changeStatusState["todolistId2"][1].status).toBe(TaskStatuses.New)
+    expect(changeStatusState["todolistId2"][0].status).toBe(TaskStatuses.Completed)
 
 
 })
 test("ChangeTitle", () => {
-    let startState = {
-        "todolistId1": [
-            {id: "1", title: "CSS", isDone: false},
-            {id: "2", title: "HTML", isDone: true},
-            {id: "3", title: "HTML", isDone: false},
-            {id: "4", title: "HTML", isDone: true}
-        ],
-        "todolistId2": [
-            {id: "1", title: "CSS", isDone: false},
-            {id: "2", title: "HTML", isDone: true},
-            {id: "3", title: "HTML", isDone: false},
-            {id: "4", title: "HTML", isDone: true}
-        ]
-    }
 
 
     const action = changeTitleAC("3", "JS", "todolistId2")
@@ -103,28 +59,14 @@ test("ChangeTitle", () => {
     expect(AddTodolistState["todolistId2"][1].title).toBe("HTML")
     expect(AddTodolistState["todolistId2"].find(f => f.title === "JS")).toEqual({
         "id": "3",
-        "isDone": false,
-        "title": "JS"
+        "title": "JS",status:TaskStatuses.Completed,todoListId:"todolistId2",
+        description:"",startDate:"",deadline:"",addedDate:"",order:0, priority:TaskPriorities.Low,
+        completed:false
     })
 
 
 });
 test("AddTodolist", () => {
-    let startState = {
-        "todolistId1": [
-            {id: "1", title: "CSS", isDone: false},
-            {id: "2", title: "HTML", isDone: true},
-            {id: "3", title: "HTML", isDone: false},
-            {id: "4", title: "HTML", isDone: true}
-        ],
-        "todolistId2": [
-            {id: "1", title: "CSS", isDone: false},
-            {id: "2", title: "HTML", isDone: true},
-            {id: "3", title: "HTML", isDone: false},
-            {id: "4", title: "HTML", isDone: true}
-        ]
-    }
-
 
     const action = AddTodolistAC("New Todolist")
     const addTodolistState = tasksReducer(startState, action)
@@ -142,18 +84,6 @@ test("AddTodolist", () => {
 })
 
 test('property with todolistId should be deleted', () => {
-    const startState: TasksStateType = {
-        "todolistId1": [
-            {id: "1", title: "CSS", isDone: false},
-            {id: "2", title: "JS", isDone: true},
-            {id: "3", title: "React", isDone: false}
-        ],
-        "todolistId2": [
-            {id: "1", title: "bread", isDone: false},
-            {id: "2", title: "milk", isDone: true},
-            {id: "3", title: "tea", isDone: false}
-        ]
-    };
 
     const action = RemoveTodolistAC("todolistId2");
 

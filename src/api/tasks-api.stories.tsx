@@ -55,8 +55,16 @@ export const UpdateTaskTitle = () => {
     useEffect(() => {
         const todolistId="46f6c73b-6961-440e-86a6-60976039ee98"
         const taskId="ebe482de-a36c-46c8-b008-2f7695116ddd"
-        const title='second task'
-        taskApi.updateTask(todolistId,taskId,title)
+        const model={
+            title: "",
+            description: "",
+            completed: false,
+            status: 0,
+            priority: 0,
+            startDate: "",
+            deadline: ""
+        }
+        taskApi.updateTask(todolistId,taskId,model)
             .then(response=>setState(response))
     }, [])
 

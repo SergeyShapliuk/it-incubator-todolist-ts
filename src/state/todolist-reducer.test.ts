@@ -1,10 +1,11 @@
 import {v1} from "uuid";
-import {FilterValueType, TodolistType} from "../App";
+
+import {FilterValueType} from "../App";
 import todolistReducer, {
     AddTodolistAC,
     ChangeFilterAC,
     ChangeTodolistTitleAC,
-    RemoveTodolistAC
+    RemoveTodolistAC, TodolistDomainType
 } from "./todolist-reducer";
 
 
@@ -12,9 +13,11 @@ test("ChangeFilter", () => {
     let todolistId1 = v1()
     let todolistId2 = v1()
 
-    let startState: TodolistType[] = [
-        {id: todolistId1, title: "What to learn", filter: "all"},
-        {id: todolistId2, title: "What to buy", filter: "all"}
+    let startState: TodolistDomainType[] = [
+        {id: todolistId1, title: "What to learn", filter: "all",addedDate: "",
+            order: 0},
+        {id: todolistId2, title: "What to buy", filter: "all",addedDate: "",
+            order: 0}
     ]
     let newFilter: FilterValueType = "completed"
 
@@ -29,9 +32,11 @@ test("RemoveTodolist", () => {
     let todolistId1 = v1()
     let todolistId2 = v1()
 
-    let startState: TodolistType[] = [
-        {id: todolistId1, title: "What to learn", filter: "all"},
-        {id: todolistId2, title: "What to buy", filter: "all"}
+    let startState:TodolistDomainType[] = [
+        {id: todolistId1, title: "What to learn", filter: "all",addedDate: "",
+            order: 0},
+        {id: todolistId2, title: "What to buy", filter: "all",addedDate: "",
+            order: 0}
     ]
 
 
@@ -47,9 +52,11 @@ test("ChangeTodolistTitle", () => {
     let todolistId1 = v1()
     let todolistId2 = v1()
 
-    let startState: TodolistType[] = [
-        {id: todolistId1, title: "What to learn", filter: "all"},
-        {id: todolistId2, title: "What to buy", filter: "all"}
+    let startState: TodolistDomainType[] = [
+        {id: todolistId1, title: "What to learn", filter: "all",addedDate: "",
+            order: 0},
+        {id: todolistId2, title: "What to buy", filter: "all",addedDate: "",
+            order: 0}
     ]
 
 
@@ -65,9 +72,11 @@ test("AddTodolist", () => {
     let todolistId1 = v1()
     let todolistId2 = v1()
 
-    let startState: TodolistType[] = [
-        {id: todolistId1, title: "What to learn", filter: "all"},
-        {id: todolistId2, title: "What to buy", filter: "all"}
+    let startState: TodolistDomainType[]= [
+        {id: todolistId1, title: "What to learn", filter: "all",addedDate: "",
+            order: 0},
+        {id: todolistId2, title: "What to buy", filter: "all",addedDate: "",
+            order: 0}
     ]
 
 

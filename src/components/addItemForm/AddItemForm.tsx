@@ -8,7 +8,6 @@ type AddItemFormType = {
 }
 
 const AddItemForm = React.memo((props: AddItemFormType) => {
-    console.log('AddItemForm is called')
 
     const [title, setTitle] = useState("")
     const [error, setError] = useState<string | null>(null)
@@ -34,7 +33,6 @@ const AddItemForm = React.memo((props: AddItemFormType) => {
         <div>
 
             <TextField
-
                 label="Type value..."
                 variant="outlined"
                 defaultValue="Hello World"
