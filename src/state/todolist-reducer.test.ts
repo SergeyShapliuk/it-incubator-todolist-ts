@@ -4,7 +4,7 @@ import {FilterValueType} from "../App";
 import todolistReducer, {
     AddTodolistAC,
     ChangeFilterAC,
-    ChangeTodolistTitleAC,
+    ChangeTodolistTitleAC, GetTodolistAC,
     RemoveTodolistAC, TodolistDomainType
 } from "./todolist-reducer";
 
@@ -80,12 +80,38 @@ test("AddTodolist", () => {
     ]
 
 
-    const action = AddTodolistAC("New Title")
+    const action = AddTodolistAC({
+        title:"New Title",
+        id:"",
+        addedDate:"",
+        order:0
+    })
     const AddTodolist = todolistReducer(startState, action)
 
     expect(AddTodolist[0].title).toBe("New Title")
     expect(AddTodolist[1].title).toBe( "What to learn")
     expect(AddTodolist.length).toBe( 3)
+
+
+});
+test("GetTodolist", () => {
+    let todolistId1 = v1()
+    let todolistId2 = v1()
+
+    let startState: TodolistDomainType[]= [
+        {id: todolistId1, title: "What to learn", filter: "all",addedDate: "",
+            order: 0},
+        {id: todolistId2, title: "What to buy", filter: "all",addedDate: "",
+            order: 0}
+    ]
+
+
+    const action = GetTodolistAC(startState)
+    const GetTodolist = todolistReducer(startState, action)
+
+    expect(GetTodolist.length).toBe(2)
+    expect(GetTodolist[1].id).toBe(todolistId2)
+
 
 
 });

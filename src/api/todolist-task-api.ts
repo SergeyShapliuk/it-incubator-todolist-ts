@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
+
 
 
 const instant = axios.create({
@@ -18,6 +19,7 @@ export type TodolistType = {
 type TodolistResponseType<D={}>={
     resultCode: number
     messages: string[]
+    fieldsErrors: Array<string>
     data: D
 };
 export enum TaskStatuses{
@@ -38,8 +40,8 @@ export type TaskType={
     description: string
     title: string
     completed: boolean
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string
     deadline: string
     id: string
@@ -61,15 +63,16 @@ type CreateTaskType={
 
 
 };
-export type UpdateTaskType={
+export type UpdateTaskModelType={
     title: string
     description: string
     completed: boolean
-    status: number
-    priority: number
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string
     deadline: string
 };
+
 type DeleteTaskType={
     resultCode: number
     messages: string[]
@@ -80,19 +83,18 @@ type DeleteTaskType={
 export const todolistTaskApi = {
     getTodolist() {
         return instant.get<TodolistType[]>('/todo-lists')
-            .then(response => response.data)
     },
     createTodolist(title: string) {
-        return instant.post<TodolistResponseType>('/todo-lists', {title})
-            .then(response => response.data)
+        return instant.post<{title:string},AxiosResponse<TodolistResponseType<{ item: TodolistType }>>>('/todo-lists', {title})
+
     },
     updateTodolist(todolistId: string, title: string) {
-        return instant.put<TodolistResponseType>('/todo-lists/' + todolistId, {title})
-            .then(response => response.data)
+        return instant.put<{ title: string }, AxiosResponse<TodolistResponseType>>('/todo-lists/' + todolistId, {title})
+
     },
     deleteTodolist(todolistId: string) {
         return instant.delete<TodolistResponseType>('/todo-lists/' + todolistId)
-            .then(response => response.data)
+
     }
 };
 
@@ -100,19 +102,19 @@ export const todolistTaskApi = {
 export const taskApi = {
     getTask(todolistId: string) {
         return instant.get<TaskResponseType>(`/todo-lists/${todolistId}/tasks`)
-            .then(response => response.data)
+
     },
     createTask(todolistId: string,title:string) {
-        return instant.post<CreateTaskType>(`/todo-lists/${todolistId}/tasks`,{title})
-            .then(response => response.data)
+        return instant.post<{ title: string }, AxiosResponse<TodolistResponseType<{ item: TaskType }>>>(`/todo-lists/${todolistId}/tasks`,{title})
+
     },
-    updateTask(todolistId: string,taskId:string,model:UpdateTaskType) {
-        return instant.put<UpdateTaskType>(`/todo-lists/${todolistId}/tasks/${taskId}`,{model})
-            .then(response => response.data)
+    updateTask(todolistId: string,taskId:string,model:UpdateTaskModelType) {
+        return instant.put<UpdateTaskModelType>(`/todo-lists/${todolistId}/tasks/${taskId}`,{model})
+
     },
     deleteTask(todolistId: string,taskId:string) {
-        return instant.delete<DeleteTaskType>(`/todo-lists/${todolistId}/tasks/${taskId}`)
-            .then(response => response.data)
+        return instant.delete<TaskResponseType, AxiosResponse<TodolistResponseType<{ item: TaskType }>>>(`/todo-lists/${todolistId}/tasks/${taskId}`)
+
     },
 };
 

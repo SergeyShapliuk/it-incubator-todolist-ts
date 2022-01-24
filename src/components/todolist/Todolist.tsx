@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect} from "react";
 import AddItemForm from "../addItemForm/AddItemForm";
 import EditableSpan from "../editableSpan/EditableSpan";
 import {Button, ButtonGroup, IconButton, List} from "@material-ui/core";
@@ -6,6 +6,8 @@ import {Delete} from "@material-ui/icons";
 import {Task} from "../task/Task";
 import {TaskStatuses, TaskType} from "../../api/todolist-task-api";
 import {FilterValueType} from "../../state/todolist-reducer";
+import {useDispatch} from "react-redux";
+import { getTasksTC} from "../../state/tasks-reducer";
 
 
 
@@ -38,8 +40,12 @@ const Todolist = React.memo((props: PropsType) => {
     if (props.filter === "completed") {
         taskForTodolist = props.tasks.filter(f => !f.status)
     }
+const dispatch=useDispatch()
 
+useEffect(()=>{
+    dispatch(getTasksTC(props.id))
 
+},[])
     return (
         <div>
             <h3><EditableSpan title={props.title} onChange={onchangeTitle}/>
@@ -81,4 +87,6 @@ const Todolist = React.memo((props: PropsType) => {
 })
 
 export default Todolist;
+
+
 

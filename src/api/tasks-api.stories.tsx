@@ -18,7 +18,7 @@ export default {
 export const GetTasks = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        const todolistId="46f6c73b-6961-440e-86a6-60976039ee98"
+        const todolistId="bef110b8-e172-4735-8edf-8f009dfa3edf"
         taskApi.getTask(todolistId)
             .then(response=>setState(response))
         // здесь мы будем делать запрос и ответ закидывать в стейт.
@@ -31,7 +31,7 @@ export const GetTasks = () => {
 export const CreateTasks = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        const todolistId="46f6c73b-6961-440e-86a6-60976039ee98"
+        const todolistId="bef110b8-e172-4735-8edf-8f009dfa3edf"
         const title='first task'
         taskApi.createTask(todolistId,title)
             .then(response=>setState(response))
