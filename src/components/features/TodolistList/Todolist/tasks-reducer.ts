@@ -1,28 +1,8 @@
 import {AddTodolistAC, GetTodolistAC, RemoveTodolistAC} from "./todolist-reducer";
-import {TasksStateType} from "../components/appWithRedux/AppWithRedux";
-import {taskApi, TaskType, UpdateTaskModelType} from "../api/todolist-task-api";
+import {TasksStateType} from "../../../app/App";
+import {taskApi, TaskType, UpdateTaskModelType} from "../../../../api/todolist-task-api";
 import {Dispatch} from "redux";
-import {RootStoreType} from "./store";
-
-
-type RemoveTaskActionType = {
-    type: "REMOVE-TASK"
-    id: string
-    todolistId: string
-}
-
-type UpdateTaskActionType = {
-    type: "UPDATE-TASK"
-    id: string
-   model:UpdateTaskDomainTaskModelType
-    todolistId: string
-}
-type ChangeTitleActionType = {
-    type: "CHANGE-TITLE"
-    id: string
-    newTitle: string
-    todolistId: string
-}
+import {RootStoreType} from "../../../app/store";
 
 
 type ActionsTypes =
@@ -48,53 +28,25 @@ const tasksReducer = (state: initialTasksStateType = initialState, action: Actio
             return {...state, [action.todolistId]: state[action.todolistId].filter(f => f.id !== action.id)}
         }
         case "ADD-TASK": {
-            const stateCopy = {...state}
-            // let newTask:TaskType = {
-            //     id: v1(),
-            //     title: action.title,
-            //     status: TaskStatuses.New,
-            //     todoListId: action.todolistId,
-            //     description: "",
-            //     startDate: "",
-            //     deadline: "",
-            //     addedDate: "",
-            //     order: 0,
-            //     priority: TaskPriorities.Low,
-            //     completed: false
-            // }
-            const newTask = action.task
-            const tasks = stateCopy[newTask.todoListId];
-            const newTasks = [newTask, ...tasks];
-            stateCopy[newTask.todoListId] = newTasks
-            // state[action.todolistId] = [newTask, ...state[action.todolistId]]
-            // return {...state, [action.todolistId]: [newTask, ...state[action.todolistId]]}
-            return stateCopy
+            return {...state, [action.task.todoListId]: [action.task, ...state[action.task.todoListId]]}
         }
         case "UPDATE-TASK": {
             // let task = state[action.todolistId].find(f => f.id === action.id)
             // if (task) {
             //     task.isDone = action.isDone
             // }
-            return {
-                ...state,
-                [action.todolistId]: state[action.todolistId].map(f => f.id === action.id ? {
-                    ...f,
-                    ...action.model
-                } : f)
-            }
+            return {...state,
+                [action.todolistId]: state[action.todolistId]
+                    .map(f => f.id === action.id ? {...f, ...action.model} : f)}
         }
         case "CHANGE-TITLE": {
             // let todolistTitle = state[action.todolistId].find(f => f.id === action.id)
             // if (todolistTitle) {
             //     todolistTitle.title = action.newTitle
             // }
-            return {
-                ...state,
-                [action.todolistId]: state[action.todolistId].map(f => f.id === action.id ? {
-                    ...f,
-                    title: action.newTitle
-                } : f)
-            }
+            return {...state,
+                [action.todolistId]: state[action.todolistId]
+                    .map(f => f.id === action.id ? {...f, title: action.newTitle} : f)}
         }
         case "ADD-TODOLIST": {
             //state[action.todolistId] = []
@@ -120,28 +72,16 @@ const tasksReducer = (state: initialTasksStateType = initialState, action: Actio
             return state;
     }
 }
-export const removeTaskAC = (id: string, todolistId: string): RemoveTaskActionType => ({
-    type: "REMOVE-TASK",
-    id, todolistId
-}) as const
-export const addTaskAC = (task: TaskType) => ({
-    type: "ADD-TASK",
-    task
-}) as const
-export const updateTaskAC = (id: string, model:UpdateTaskDomainTaskModelType, todolistId: string): UpdateTaskActionType => ({
-    type: "UPDATE-TASK", id, model, todolistId
-}) as const
-export const changeTitleAC = (id: string, newTitle: string, todolistId: string): ChangeTitleActionType => ({
-    type: "CHANGE-TITLE",
-    id,
-    newTitle,
-    todolistId
-}) as const
-export const getTasksAC = (tasks: TaskType[], todolistId: string) => ({
-    type: "GET_TASKS",
-    tasks,
-    todolistId
-}) as const
+export const removeTaskAC = (id: string, todolistId: string)=>
+    ({type: "REMOVE-TASK", id, todolistId}) as const
+export const addTaskAC = (task: TaskType) =>
+    ({type: "ADD-TASK", task}) as const
+export const updateTaskAC = (id: string, model:UpdateTaskDomainTaskModelType, todolistId: string)=>
+    ({type: "UPDATE-TASK", id, model, todolistId}) as const
+export const changeTitleAC = (id: string, newTitle: string, todolistId: string)=>
+    ({type: "CHANGE-TITLE", id, newTitle, todolistId}) as const
+export const getTasksAC = (tasks: TaskType[], todolistId: string)=>
+    ({type: "GET_TASKS", tasks, todolistId}) as const
 
 export const getTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsTypes>) => {
     taskApi.getTask(todolistId).then(data => {
@@ -150,14 +90,14 @@ export const getTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsTyp
         dispatch(action)
     })
 };
-export const createTasksTC = (todolistId: string, title: string) => (dispatch: Dispatch) => {
+export const createTasksTC = (todolistId: string, title: string) => (dispatch: Dispatch<ActionsTypes>) => {
     taskApi.createTask(title,todolistId).then((data) => {
         const task=data.data.data.item
         const action = addTaskAC(task)
         dispatch(action)
     })
 };
-export const deleteTasksTC = (todolistId:string,taskId:string) => (dispatch: Dispatch) => {
+export const deleteTasksTC = (todolistId:string,taskId:string) => (dispatch: Dispatch<ActionsTypes>) => {
     taskApi.deleteTask(taskId,todolistId).then((data) => {
         const action = removeTaskAC(taskId,todolistId)
         dispatch(action)

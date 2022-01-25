@@ -9,6 +9,43 @@ const instant = axios.create({
         'API-KEY': 'd63defdb-0459-40a2-9e7d-c1b6f429e0a6'
     }
 });
+
+export const todolistTaskApi = {
+    getTodolist() {
+        return instant.get<TodolistType[]>
+        ('/todo-lists')
+    },
+    createTodolist(title: string) {
+        return instant.post<{title:string},AxiosResponse<TodolistResponseType<{item: TodolistType }>>>
+        ('/todo-lists', {title})
+    },
+    updateTodolist(todolistId: string, title: string) {
+        return instant.put<{ title: string }, AxiosResponse<TodolistResponseType>>
+        ('/todo-lists/' + todolistId, {title})
+    },
+    deleteTodolist(todolistId: string) {
+        return instant.delete<TodolistResponseType>
+        ('/todo-lists/' + todolistId)
+    }
+};
+export const taskApi = {
+    getTask(todolistId: string) {
+        return instant.get<TaskResponseType>
+        (`/todo-lists/${todolistId}/tasks`)
+    },
+    createTask(todolistId: string,title:string) {
+        return instant.post<{ title: string }, AxiosResponse<TodolistResponseType<{ item: TaskType }>>>
+        (`/todo-lists/${todolistId}/tasks`,{title})
+    },
+    updateTask(todolistId: string,taskId:string,model:UpdateTaskModelType) {
+        return instant.put<UpdateTaskModelType, AxiosResponse<TodolistResponseType<{ item: TaskType }>>>
+        (`/todo-lists/${todolistId}/tasks/${taskId}`,model)
+    },
+    deleteTask(todolistId: string,taskId:string) {
+        return instant.delete<TodolistResponseType>
+        (`/todo-lists/${todolistId}/tasks/${taskId}`)
+    }
+};
 export type TodolistType = {
     id: string
     title: string
@@ -60,43 +97,5 @@ export type UpdateTaskModelType={
     priority: TaskPriorities
     startDate: string
     deadline: string
-};
-
-export const todolistTaskApi = {
-    getTodolist() {
-        return instant.get<TodolistType[]>('/todo-lists')
-    },
-    createTodolist(title: string) {
-        return instant.post<{title:string},AxiosResponse<TodolistResponseType<{ item: TodolistType }>>>('/todo-lists', {title})
-
-    },
-    updateTodolist(todolistId: string, title: string) {
-        return instant.put<{ title: string }, AxiosResponse<TodolistResponseType>>('/todo-lists/' + todolistId, {title})
-
-    },
-    deleteTodolist(todolistId: string) {
-        return instant.delete<TodolistResponseType>('/todo-lists/' + todolistId)
-
-    }
-};
-
-
-export const taskApi = {
-    getTask(todolistId: string) {
-        return instant.get<TaskResponseType>(`/todo-lists/${todolistId}/tasks`)
-
-    },
-    createTask(todolistId: string,title:string) {
-        return instant.post<{ title: string }, AxiosResponse<TodolistResponseType<{ item: TaskType }>>>(`/todo-lists/${todolistId}/tasks`,{title})
-
-    },
-    updateTask(todolistId: string,taskId:string,model:UpdateTaskModelType) {
-        return instant.put<UpdateTaskModelType, AxiosResponse<TodolistResponseType<{ item: TaskType }>>>(`/todo-lists/${todolistId}/tasks/${taskId}`,model)
-
-    },
-    deleteTask(todolistId: string,taskId:string) {
-        return instant.delete<TodolistResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`)
-
-    }
 };
 

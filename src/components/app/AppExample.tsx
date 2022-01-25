@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import './App.css';
 import {v1} from "uuid";
-import AddItemForm from "./components/addItemForm/AddItemForm";
+import AddItemForm from "../addItemForm/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import Todolist from "./components/todolist/Todolist";
-import {TodolistDomainType} from "./state/todolist-reducer";
-import {TaskPriorities, TaskStatuses, TaskType} from './api/todolist-task-api';
+import Todolist from "../features/TodolistList/Todolist/Todolist";
+import {TodolistDomainType} from "../features/TodolistList/Todolist/todolist-reducer";
+import {TaskPriorities, TaskStatuses, TaskType} from '../../api/todolist-task-api';
 
 
 export type FilterValueType = "all" | "active" | "completed"
@@ -16,7 +16,7 @@ export type TasksStateType={
     [key:string]:TaskType[]
 }
 
-function App() {
+function AppExample() {
 
     let todolistId1 = v1()
     let todolistId2 = v1()
@@ -164,7 +164,7 @@ function App() {
     );
 }
 
-export default App;
+export default AppExample;
 
 
 
