@@ -7,8 +7,7 @@ import {Task} from "../task/Task";
 import {TaskStatuses, TaskType} from "../../api/todolist-task-api";
 import {FilterValueType} from "../../state/todolist-reducer";
 import {useDispatch} from "react-redux";
-import { getTasksTC} from "../../state/tasks-reducer";
-
+import {getTasksTC} from "../../state/tasks-reducer";
 
 
 type PropsType = {
@@ -27,25 +26,35 @@ type PropsType = {
 
 
 const Todolist = React.memo((props: PropsType) => {
+    const dispatch=useDispatch()
+
+    useEffect(()=>{
+        const actionTC=getTasksTC(props.id)
+        dispatch(actionTC)
+    },[])
+
     const onClickStatusAll = useCallback(() => props.changeFilter("all", props.id), [props.changeFilter, props.id])
     const onClickStatusActive = useCallback(() => props.changeFilter("active", props.id), [props.changeFilter, props.id])
     const onClickStatusCompleted = useCallback(() => props.changeFilter("completed", props.id), [props.changeFilter, props.id])
-    const removeTodolist = () => props.removeTodolist(props.id)
-    const addItem = useCallback((title: string) => props.addTask(title, props.id), [])
-    const onchangeTitle = useCallback((newTitle: string) => props.changeTodolistTitle(props.id, newTitle), [props.changeTodolistTitle, props.id])
+    const removeTodolist = () =>{
+        props.removeTodolist(props.id)
+    }
+    const addItem = useCallback((title: string) => {
+        props.addTask(title, props.id)
+    }, [props.addTask, props.id])
+
+    const onchangeTitle = useCallback((newTitle: string) =>{
+        props.changeTodolistTitle(props.id, newTitle)
+    } , [props.id, props.changeTodolistTitle])
+
     let taskForTodolist = props.tasks
     if (props.filter === "active") {
-        taskForTodolist = props.tasks.filter(f => f.status)
+        taskForTodolist = props.tasks.filter(f => f.status===TaskStatuses.New)
     }
     if (props.filter === "completed") {
-        taskForTodolist = props.tasks.filter(f => !f.status)
+        taskForTodolist = props.tasks.filter(f => f.status===TaskStatuses.Completed)
     }
-const dispatch=useDispatch()
 
-useEffect(()=>{
-    dispatch(getTasksTC(props.id))
-
-},[])
     return (
         <div>
             <h3><EditableSpan title={props.title} onChange={onchangeTitle}/>

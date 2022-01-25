@@ -13,14 +13,16 @@ const AddItemForm = React.memo((props: AddItemFormType) => {
     const [error, setError] = useState<string | null>(null)
     const addTask = () => {
         if (title.trim() !== "") {
-            props.addItem(title.trim())
+            props.addItem(title)
             setTitle("")
         } else {
             return setError("Title is required")
         }
     }
 
-    const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
+    const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) =>{
+        setTitle(e.currentTarget.value)
+    }
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (error !== null) {
             setError(null)

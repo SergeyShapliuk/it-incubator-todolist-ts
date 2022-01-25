@@ -9,7 +9,6 @@ const instant = axios.create({
         'API-KEY': 'd63defdb-0459-40a2-9e7d-c1b6f429e0a6'
     }
 });
-
 export type TodolistType = {
     id: string
     title: string
@@ -34,7 +33,6 @@ export enum TaskPriorities{
     Hi,
     Urgently,
     Later
-
 }
 export type TaskType={
     description: string
@@ -54,15 +52,6 @@ type TaskResponseType={
     totalCount:number
     items:TaskType[]
 };
-type CreateTaskType={
-    resultCode: number
-    messages: string[]
-    data:{
-        item:TaskType
-    }
-
-
-};
 export type UpdateTaskModelType={
     title: string
     description: string
@@ -72,13 +61,6 @@ export type UpdateTaskModelType={
     startDate: string
     deadline: string
 };
-
-type DeleteTaskType={
-    resultCode: number
-    messages: string[]
-    data: {}
-}
-
 
 export const todolistTaskApi = {
     getTodolist() {
@@ -109,12 +91,12 @@ export const taskApi = {
 
     },
     updateTask(todolistId: string,taskId:string,model:UpdateTaskModelType) {
-        return instant.put<UpdateTaskModelType>(`/todo-lists/${todolistId}/tasks/${taskId}`,{model})
+        return instant.put<UpdateTaskModelType, AxiosResponse<TodolistResponseType<{ item: TaskType }>>>(`/todo-lists/${todolistId}/tasks/${taskId}`,model)
 
     },
     deleteTask(todolistId: string,taskId:string) {
-        return instant.delete<TaskResponseType, AxiosResponse<TodolistResponseType<{ item: TaskType }>>>(`/todo-lists/${todolistId}/tasks/${taskId}`)
+        return instant.delete<TodolistResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`)
 
-    },
+    }
 };
 
