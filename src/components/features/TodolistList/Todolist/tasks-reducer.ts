@@ -3,6 +3,7 @@ import {TasksStateType} from "../../../app/App";
 import {taskApi, TaskType, UpdateTaskModelType} from "../../../../api/todolist-task-api";
 import {Dispatch} from "redux";
 import {RootStoreType} from "../../../app/store";
+import {setErrorAC, SetErrorActionType, setStatusAC, SetStatusActionType} from "../../../app/app-reducer/AppReducer";
 
 
 type ActionsTypes =
@@ -83,18 +84,32 @@ export const changeTitleAC = (id: string, newTitle: string, todolistId: string)=
 export const getTasksAC = (tasks: TaskType[], todolistId: string)=>
     ({type: "GET_TASKS", tasks, todolistId}) as const
 
-export const getTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsTypes>) => {
+export const getTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsTypes|SetStatusActionType>) => {
+    dispatch(setStatusAC('loading'))
     taskApi.getTask(todolistId).then(data => {
         const tasks = data.data.items
         const action = getTasksAC(tasks, todolistId)
         dispatch(action)
+        dispatch(setStatusAC('succeeded'))
     })
 };
-export const createTasksTC = (todolistId: string, title: string) => (dispatch: Dispatch<ActionsTypes>) => {
+export const createTasksTC = (todolistId: string, title: string) => (dispatch: Dispatch<ActionsTypes|SetErrorActionType|SetStatusActionType>) => {
+    dispatch(setStatusAC('loading'))
     taskApi.createTask(title,todolistId).then((data) => {
-        const task=data.data.data.item
-        const action = addTaskAC(task)
-        dispatch(action)
+       if(data.data.resultCode===0){
+           const task=data.data.data.item
+           const action = addTaskAC(task)
+           dispatch(action)
+           dispatch(setStatusAC('succeeded'))
+       }else {
+           if(data.data.messages.length){
+               dispatch(setErrorAC(data.data.messages[0]))
+           }else {
+               dispatch(setErrorAC('Some error occurred'))
+           }
+           dispatch(setStatusAC('failed'))
+       }
+
     })
 };
 export const deleteTasksTC = (todolistId:string,taskId:string) => (dispatch: Dispatch<ActionsTypes>) => {

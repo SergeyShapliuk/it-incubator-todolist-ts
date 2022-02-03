@@ -4,6 +4,12 @@ import {AppBar, Button, Container, IconButton, Toolbar, Typography} from "@mater
 import {Menu} from "@material-ui/icons";
 import {TaskType} from '../../api/todolist-task-api';
 import {TodolistList} from "../features/TodolistList/TodolistList";
+import {LinearProgress} from "@mui/material";
+import ErrorSnackbars from "../ErrorSnackBar/ErrorSnackBar";
+import {useSelector} from "react-redux";
+import {RootStoreType} from "./store";
+import {RequestStatusType} from "./app-reducer/AppReducer";
+
 
 
 export type TasksStateType = {
@@ -11,10 +17,11 @@ export type TasksStateType = {
 }
 
 function App() {
-
+const status=useSelector<RootStoreType,RequestStatusType>(state => state.app.status)
 
     return (
         <div className="App">
+            <ErrorSnackbars/>
             <AppBar position={"static"}>
                 <Toolbar>
                     <IconButton edge={"start"} color={"inherit"} aria-label={"menu"}>
@@ -25,6 +32,7 @@ function App() {
                     </Typography>
                     <Button color={"inherit"}>Login</Button>
                 </Toolbar>
+                {status ==='loading' && <LinearProgress/>}
             </AppBar>
             <Container fixed>
                 <TodolistList/>
