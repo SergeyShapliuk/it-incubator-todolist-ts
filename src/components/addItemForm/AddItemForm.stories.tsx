@@ -20,4 +20,9 @@ export const AddItemFormStory = Template.bind({});
 AddItemFormStory.args = {
     addItem:action("Button clicked inside form"),
 };
+export const AddItemFormDisabledExample = Template.bind({});
+AddItemFormDisabledExample.args = {
+    disabled:true,
+    addItem:action("Button clicked inside form"),
+};
 

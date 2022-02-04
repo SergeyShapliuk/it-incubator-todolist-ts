@@ -12,11 +12,8 @@ import {RequestStatusType} from "./app-reducer/AppReducer";
 
 
 
-export type TasksStateType = {
-    [key: string]: TaskType[]
-}
 
-function App() {
+function App({demo=false}:PropsType) {
 const status=useSelector<RootStoreType,RequestStatusType>(state => state.app.status)
 
     return (
@@ -35,7 +32,7 @@ const status=useSelector<RootStoreType,RequestStatusType>(state => state.app.sta
                 {status ==='loading' && <LinearProgress/>}
             </AppBar>
             <Container fixed>
-                <TodolistList/>
+                <TodolistList demo={demo}/>
             </Container>
         </div>
     );
@@ -44,3 +41,9 @@ const status=useSelector<RootStoreType,RequestStatusType>(state => state.app.sta
 export default App;
 
 
+export type TasksStateType = {
+    [key: string]: TaskType[]
+}
+type PropsType={
+    demo?:boolean
+}

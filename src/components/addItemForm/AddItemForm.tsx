@@ -4,16 +4,17 @@ import {Button, TextField} from "@material-ui/core";
 
 type AddItemFormType = {
     addItem: (title: string) => void
+    disabled?:boolean
 
 }
 
-const AddItemForm = React.memo((props: AddItemFormType) => {
+const AddItemForm = React.memo(({addItem,disabled=false}: AddItemFormType) => {
 
     const [title, setTitle] = useState("")
     const [error, setError] = useState<string | null>(null)
     const addTask = () => {
         if (title.trim() !== "") {
-            props.addItem(title)
+            addItem(title)
             setTitle("")
         } else {
             return setError("Title is required")
@@ -42,9 +43,10 @@ const AddItemForm = React.memo((props: AddItemFormType) => {
                 helperText={error}
                 value={title} onChange={onChangeInputHandler}
                 onKeyPress={onKeyPressHandler}
+                disabled={disabled}
             />
 
-            <Button onClick={addTask} variant="contained">add</Button>
+            <Button onClick={addTask} variant="contained" disabled={disabled}>add</Button>
 
 
         </div>

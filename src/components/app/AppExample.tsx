@@ -22,9 +22,9 @@ function AppExample() {
     let todolistId2 = v1()
 
     let [todolists, setTodolists] = useState<TodolistDomainType[]>([
-        {id: todolistId1, title: "What to learn", filter: "all", addedDate: "",
+        {id: todolistId1, title: "What to learn", filter: "all",entityStatus:"idle", addedDate: "",
             order: 0},
-        {id: todolistId2, title: "What to buy", filter: "all", addedDate: "",
+        {id: todolistId2, title: "What to buy", filter: "all",entityStatus:"idle", addedDate: "",
             order: 0}
     ])
 
@@ -81,7 +81,7 @@ function AppExample() {
     }
 
     function addTodolist(title: string) {
-        let newTodolist: TodolistDomainType = {id: v1(), title: title, filter: "all", addedDate: "",
+        let newTodolist: TodolistDomainType = {id: v1(), title: title, filter: "all",entityStatus:"idle", addedDate: "",
             order: 0}
         setTodolists([newTodolist, ...todolists])
         setTasks({
@@ -141,15 +141,13 @@ function AppExample() {
                             return <Grid item >
                                 <Paper style={{padding:"10px"}}>
                             <Todolist
+                                todolist={m}
                                 key={m.id}
-                                id={m.id}
-                                title={m.title}
                                 removeTask={removeTask}
                                 tasks={taskForTodolist}
                                 changeFilter={changeFilter}
                                 addTask={addTask}
                                 changeStatus={changeStatus}
-                                filter={m.filter}
                                 removeTodolist={removeTodolist}
                                 changeTitle={changeTitle}
                                 changeTodolistTitle={changeTodolistTitle}

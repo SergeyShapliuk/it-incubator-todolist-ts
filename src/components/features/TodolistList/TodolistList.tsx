@@ -16,15 +16,20 @@ import {Grid, Paper} from "@material-ui/core";
 import AddItemForm from "../../addItemForm/AddItemForm";
 import Todolist from "./Todolist/Todolist";
 
-type TodolistListPropsType = {}
-export const TodolistList: React.FC<TodolistListPropsType> = () => {
+
+export const TodolistList: React.FC<PropsType> = ({demo=false}) => {
     const dispatch = useDispatch()
     const todolists = useSelector<RootStoreType, TodolistDomainType[]>(state => state.todolists)
     const tasks = useSelector<RootStoreType, initialTasksStateType>(state => state.tasks)
 
     useEffect(() => {
-        const thunk = getTodolistTC()
-        dispatch(thunk)
+        if(demo){
+            return
+        }else {
+            const thunk = getTodolistTC()
+            dispatch(thunk)
+        }
+
     }, [])
     const removeTask = useCallback((id: string, todolistId: string) => {
         dispatch(deleteTasksTC(id, todolistId))
@@ -99,18 +104,17 @@ export const TodolistList: React.FC<TodolistListPropsType> = () => {
                         return <Grid item>
                             <Paper style={{padding: "10px"}}>
                                 <Todolist
+                                    todolist={m}
                                     key={m.id}
-                                    id={m.id}
-                                    title={m.title}
                                     removeTask={removeTask}
                                     tasks={taskForTodolist}
                                     changeFilter={changeFilter}
                                     addTask={addTask}
                                     changeStatus={changeStatus}
-                                    filter={m.filter}
                                     removeTodolist={removeTodolist}
                                     changeTitle={changeTitle}
                                     changeTodolistTitle={changeTodolistTitle}
+                                    demo={demo}
                                 />
                             </Paper>
                         </Grid>
@@ -120,3 +124,7 @@ export const TodolistList: React.FC<TodolistListPropsType> = () => {
         </>
     )
 }
+type PropsType={
+    demo?:boolean
+}
+type TodolistListPropsType = {}

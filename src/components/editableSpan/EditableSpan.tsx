@@ -27,9 +27,9 @@ const EditableSpan=React.memo((props: EditableSpanPropsType)=> {
     }
 
     return editMode
-        ? <TextField value={title} onChange={onChangeTitleHandler} onBlur={activeViewMode} autoFocus/>
+        ? <TextField value={title} onChange={onChangeTitleHandler} onBlur={activeViewMode} autoFocus disabled/>
         : <span onDoubleClick={activeEditMode}>{props.title}
-            <IconButton size={"small"}>
+            <IconButton size={"small"} >
             <Edit/>
         </IconButton>
             </span>

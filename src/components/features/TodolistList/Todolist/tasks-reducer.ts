@@ -3,7 +3,7 @@ import {TasksStateType} from "../../../app/App";
 import {taskApi, TaskType, UpdateTaskModelType} from "../../../../api/todolist-task-api";
 import {Dispatch} from "redux";
 import {RootStoreType} from "../../../app/store";
-import {setErrorAC, SetErrorActionType, setStatusAC, SetStatusActionType} from "../../../app/app-reducer/AppReducer";
+import {setAppErrorAC, SetErrorActionType, setAppStatusAC, SetStatusActionType} from "../../../app/app-reducer/AppReducer";
 
 
 type ActionsTypes =
@@ -85,29 +85,29 @@ export const getTasksAC = (tasks: TaskType[], todolistId: string)=>
     ({type: "GET_TASKS", tasks, todolistId}) as const
 
 export const getTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsTypes|SetStatusActionType>) => {
-    dispatch(setStatusAC('loading'))
+    dispatch(setAppStatusAC('loading'))
     taskApi.getTask(todolistId).then(data => {
         const tasks = data.data.items
         const action = getTasksAC(tasks, todolistId)
         dispatch(action)
-        dispatch(setStatusAC('succeeded'))
+        dispatch(setAppStatusAC('succeeded'))
     })
 };
 export const createTasksTC = (todolistId: string, title: string) => (dispatch: Dispatch<ActionsTypes|SetErrorActionType|SetStatusActionType>) => {
-    dispatch(setStatusAC('loading'))
+    dispatch(setAppStatusAC('loading'))
     taskApi.createTask(title,todolistId).then((data) => {
        if(data.data.resultCode===0){
            const task=data.data.data.item
            const action = addTaskAC(task)
            dispatch(action)
-           dispatch(setStatusAC('succeeded'))
+           dispatch(setAppStatusAC('succeeded'))
        }else {
            if(data.data.messages.length){
-               dispatch(setErrorAC(data.data.messages[0]))
+               dispatch(setAppErrorAC(data.data.messages[0]))
            }else {
-               dispatch(setErrorAC('Some error occurred'))
+               dispatch(setAppErrorAC('Some error occurred'))
            }
-           dispatch(setStatusAC('failed'))
+           dispatch(setAppStatusAC('failed'))
        }
 
     })
