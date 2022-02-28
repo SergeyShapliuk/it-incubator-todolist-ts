@@ -25,17 +25,17 @@ type PropsType = {
 
 
 const Todolist = React.memo(({demo = false, ...props}: PropsType) => {
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
-    useEffect(() => {
-        if (demo) {
-            return
-        } else {
-            const actionTC = getTasksTC(props.todolist.id)
-            dispatch(actionTC)
-        }
-
-    }, [])
+    // useEffect(() => {
+    //     if (demo) {
+    //         return
+    //     } else {
+    //         const actionTC = getTasksTC(props.todolist.id)
+    //         dispatch(actionTC)
+    //     }
+    //
+    // }, [])
 
     const onClickStatusAll = useCallback(() =>
         props.changeFilter("all", props.todolist.id), [props.changeFilter, props.todolist.id])

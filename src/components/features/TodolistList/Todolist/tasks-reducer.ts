@@ -2,11 +2,11 @@ import {AddTodolistAC, GetTodolistAC, RemoveTodolistAC} from "./todolist-reducer
 import {TasksStateType} from "../../../app/App";
 import {taskApi, TaskType, UpdateTaskModelType} from "../../../../api/todolist-task-api";
 import {Dispatch} from "redux";
-import {RootStoreType} from "../../../app/store";
-import {setAppErrorAC, SetErrorActionType, setAppStatusAC, SetStatusActionType} from "../../../app/app-reducer/AppReducer";
+import {RootActionsTypes, RootStoreType, RootThunkTypes} from "../../../app/store";
+import {setAppErrorAC, setAppStatusAC} from "../../../app/app-reducer/AppReducer";
 
 
-type ActionsTypes =
+export type TasksActionsTypes =
     ReturnType<typeof removeTaskAC>
     | ReturnType<typeof addTaskAC>
     | ReturnType<typeof updateTaskAC>
@@ -20,7 +20,7 @@ const initialState: TasksStateType = {}
 
 export type initialTasksStateType = typeof initialState
 
-const tasksReducer = (state: initialTasksStateType = initialState, action: ActionsTypes): initialTasksStateType => {
+const tasksReducer = (state: initialTasksStateType = initialState, action: RootActionsTypes): initialTasksStateType => {
     switch (action.type) {
         case "REMOVE-TASK": {
             // let filteredTask = state[action.todolistId].filter(f => f.id !== action.id)
@@ -69,6 +69,8 @@ const tasksReducer = (state: initialTasksStateType = initialState, action: Actio
             stateCopy[action.todolistId] = action.tasks
             return stateCopy
         }
+        case "CLEAR-DATA":
+            return {}
         default:
             return state;
     }
@@ -84,7 +86,7 @@ export const changeTitleAC = (id: string, newTitle: string, todolistId: string)=
 export const getTasksAC = (tasks: TaskType[], todolistId: string)=>
     ({type: "GET_TASKS", tasks, todolistId}) as const
 
-export const getTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsTypes|SetStatusActionType>) => {
+export const getTasksTC = (todolistId: string) => (dispatch: Dispatch<RootActionsTypes>) => {
     dispatch(setAppStatusAC('loading'))
     taskApi.getTask(todolistId).then(data => {
         const tasks = data.data.items
@@ -93,7 +95,7 @@ export const getTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsTyp
         dispatch(setAppStatusAC('succeeded'))
     })
 };
-export const createTasksTC = (todolistId: string, title: string) => (dispatch: Dispatch<ActionsTypes|SetErrorActionType|SetStatusActionType>) => {
+export const createTasksTC = (todolistId: string, title: string) => (dispatch: Dispatch<RootActionsTypes>) => {
     dispatch(setAppStatusAC('loading'))
     taskApi.createTask(title,todolistId).then((data) => {
        if(data.data.resultCode===0){
@@ -109,10 +111,9 @@ export const createTasksTC = (todolistId: string, title: string) => (dispatch: D
            }
            dispatch(setAppStatusAC('failed'))
        }
-
     })
 };
-export const deleteTasksTC = (todolistId:string,taskId:string) => (dispatch: Dispatch<ActionsTypes>) => {
+export const deleteTasksTC = (todolistId:string,taskId:string):RootThunkTypes => (dispatch) => {
     taskApi.deleteTask(taskId,todolistId).then((data) => {
         const action = removeTaskAC(taskId,todolistId)
         dispatch(action)
@@ -127,7 +128,7 @@ export type UpdateTaskDomainTaskModelType={
     startDate?: string
     deadline?: string
 };
-export const updateTaskTC = (taskId: string, domainModel:UpdateTaskDomainTaskModelType,todolistId: string) => (dispatch: Dispatch<ActionsTypes>,getState:()=>RootStoreType) => {
+export const updateTaskTC = (taskId: string, domainModel:UpdateTaskDomainTaskModelType,todolistId: string) => (dispatch: Dispatch<RootActionsTypes>,getState:()=>RootStoreType) => {
     const allTasksFromState = getState();
     const task = allTasksFromState.tasks[todolistId].find(t =>t.id === taskId)
     if (!task) {

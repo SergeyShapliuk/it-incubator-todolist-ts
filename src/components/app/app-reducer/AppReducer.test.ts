@@ -5,7 +5,8 @@ let startState:initialStateType;
 beforeEach(()=>{
     startState={
         error:null,
-        status:"idle"
+        status:"idle",
+        isInitialized:false
     }
 })
 test("correct error message should be set", () => {

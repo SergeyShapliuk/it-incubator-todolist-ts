@@ -46,18 +46,42 @@ export const taskApi = {
         (`/todo-lists/${todolistId}/tasks/${taskId}`)
     }
 };
+export const authApi={
+    login(data:LoginRequestType){
+        return instant.post<LoginRequestType,AxiosResponse<TodolistResponseType<{userId:number}>>>('/auth/login',data)
+    },
+    me(){
+        return instant.get<TodolistResponseType<DataAuthResponseType>>('/auth/me')
+    },
+    logout(){
+        return instant.delete<TodolistResponseType>('/auth/login')
+    }
+
+};
 export type TodolistType = {
     id: string
     title: string
     addedDate: string
     order: number
 };
-type TodolistResponseType<D={}>={
+export type TodolistResponseType<D={}>={
     resultCode: number
     messages: string[]
     fieldsErrors: Array<string>
     data: D
 };
+export type LoginRequestType={
+    email:string
+    password:string
+    rememberMe?:boolean
+    captcha?:string
+}
+type DataAuthResponseType={
+    userId:number
+    email:string
+    login:string
+}
+
 export enum TaskStatuses{
     New,
     InProgress,
