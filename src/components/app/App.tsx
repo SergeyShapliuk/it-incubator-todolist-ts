@@ -15,11 +15,7 @@ import {logoutTC} from "../../features/login/auth-reducer";
 
 
 function App({demo = false}: PropsType) {
-    //l;wknvglnsflksnflkgnlksfgnlskfnglkfnsglkdfnglkdfnglkdnflgkndflkg
-    //l;wknvglnsflksnflkgnlksfgnlskfnglkfnsglkdfnglkdfnglkdnflgkndflkg
-    //l;wknvglnsflksnflkgnlksfgnlskfnglkfnsglkdfnglkdfnglkdnflgkndflkg
-    //l;wknvglnsflksnflkgnlksfgnlskfnglkfnsglkdfnglkdfnglkdnflgkndflkg
-    //l;wknvglnsflksnflkgnlksfgnlskfnglkfnsglkdfnglkdfnglkdnflgkndflkg
+
     const status = useSelector<RootStoreType, RequestStatusType>(state => state.app.status)
     const isInitialized = useSelector<RootStoreType, boolean>(state => state.app.isInitialized)
     const isLoggedIn = useSelector<RootStoreType, boolean>(state => state.auth.isLoggedIn)
