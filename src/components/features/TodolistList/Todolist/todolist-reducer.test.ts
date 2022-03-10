@@ -28,7 +28,7 @@ test("ChangeFilter", () => {
 
     let newFilter: FilterValueType = "completed"
 
-    const action = ChangeFilterAC(newFilter, todolistId1)
+    const action = ChangeFilterAC({value:newFilter, todolistId:todolistId1})
     const changeFilterState = todolistReducer(startState, action)
 
     expect(changeFilterState[0].filter).toBe("completed")
@@ -37,7 +37,7 @@ test("ChangeFilter", () => {
 
 test("RemoveTodolist", () => {
 
-    const action = RemoveTodolistAC(todolistId1)
+    const action = RemoveTodolistAC({todolistId:todolistId1})
     const removeTodolist = todolistReducer(startState, action)
 
     expect(removeTodolist[0].id).toBe(todolistId2)
@@ -46,7 +46,7 @@ test("RemoveTodolist", () => {
 
 test("ChangeTodolistTitle", () => {
 
-    const action = ChangeTodolistTitleAC(todolistId2, "New Title")
+    const action = ChangeTodolistTitleAC({id:todolistId2, newTitle:"New Title"})
     const changeTodolistTitle = todolistReducer(startState, action)
 
     expect(changeTodolistTitle[0].title).toBe("What to learn")
@@ -70,7 +70,7 @@ test("AddTodolist", () => {
 
 test("GetTodolist", () => {
 
-    const action = GetTodolistAC(startState)
+    const action = GetTodolistAC({todolists:startState})
     const GetTodolist = todolistReducer(startState, action)
 
     expect(GetTodolist.length).toBe(2)
@@ -80,7 +80,7 @@ test("entity status of todolist should be changed", () => {
 
     let newStatus: RequestStatusType="loading"
 
-    const action = changeTodolistEntityStatus(todolistId2, newStatus)
+    const action = changeTodolistEntityStatus({todolistId:todolistId2, status:newStatus})
     const endState = todolistReducer(startState, action)
 
     expect(endState[0].entityStatus).toBe("idle")

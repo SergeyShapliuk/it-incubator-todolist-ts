@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from "react";
+import React, {useCallback} from "react";
 import AddItemForm from "../../../addItemForm/AddItemForm";
 import EditableSpan from "../../../editableSpan/EditableSpan";
 import {Button, ButtonGroup, IconButton, List} from "@material-ui/core";
@@ -6,8 +6,7 @@ import {Delete} from "@material-ui/icons";
 import {Task} from "./Task/Task";
 import {TaskStatuses, TaskType} from "../../../../api/todolist-task-api";
 import {FilterValueType, TodolistDomainType} from "./todolist-reducer";
-import {useDispatch} from "react-redux";
-import {getTasksTC} from "./tasks-reducer";
+
 
 
 type PropsType = {

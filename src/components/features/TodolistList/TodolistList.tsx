@@ -10,19 +10,20 @@ import {
     getTodolistTC,
     TodolistDomainType
 } from "./Todolist/todolist-reducer";
-import {createTasksTC, deleteTasksTC, initialTasksStateType, updateTaskTC} from "./Todolist/tasks-reducer";
+import {createTasksTC, deleteTasksTC, updateTaskTC} from "./Todolist/tasks-reducer";
 import {TaskStatuses} from "../../../api/todolist-task-api";
 import {Grid, Paper} from "@material-ui/core";
 import AddItemForm from "../../addItemForm/AddItemForm";
 import Todolist from "./Todolist/Todolist";
 import {Navigate} from "react-router-dom";
+import {TasksStateType} from "../../app/App";
 
 
 export const TodolistList: React.FC<PropsType> = ({demo = false}) => {
     const dispatch = useDispatch()
     const isLoggedIn = useSelector<RootStoreType, boolean>(state => state.auth.isLoggedIn)
     const todolists = useSelector<RootStoreType, TodolistDomainType[]>(state => state.todolists)
-    const tasks = useSelector<RootStoreType, initialTasksStateType>(state => state.tasks)
+    const tasks = useSelector<RootStoreType,TasksStateType>(state => state.tasks)
 
     useEffect(() => {
         if (demo || !isLoggedIn) {
@@ -38,7 +39,7 @@ export const TodolistList: React.FC<PropsType> = ({demo = false}) => {
         // setTasks({...tasks})
     }, [])
     const changeFilter = useCallback((value: FilterValueType, todolistId: string) => {
-        dispatch(ChangeFilterAC(value, todolistId))
+        dispatch(ChangeFilterAC({value:value, todolistId:todolistId}))
         // let todolist = todolists.find(f => f.id === todolistId)
         // if (todolist) {
         //     todolist.filter = value
