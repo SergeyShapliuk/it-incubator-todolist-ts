@@ -1,9 +1,8 @@
 import {todolistTaskApi, TodolistType} from "../../../../api/todolist-task-api";
 import {Dispatch} from "redux";
 import {RequestStatusType, setAppStatusAC} from "../../../app/app-reducer/AppReducer";
-import {RootActionsTypes, RootThunkTypes} from "../../../app/store";
-import {getTasksTC} from "./tasks-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {handleServerNetworkError} from "../../../../utils/error-utils";
 
 
 // const CHANGE_FILTER = "CHANGE-FILTER"
@@ -44,9 +43,6 @@ const slice = createSlice({
             const index = state.findIndex(tl => tl.id === action.payload.todolistId)
             state[index].entityStatus = action.payload.status
         },
-        clearTodosDataAC() {
-            return []
-        }
     },
 })
 
@@ -55,7 +51,7 @@ export const todolistReducer = slice.reducer
 export const {
     ChangeFilterAC, RemoveTodolistAC,
     ChangeTodolistTitleAC, AddTodolistAC,
-    GetTodolistAC, changeTodolistEntityStatus, clearTodosDataAC
+    GetTodolistAC, changeTodolistEntityStatus
 } = slice.actions
 //
 // const todolistReducer = (state: InitialTodolistStateType = initialState, action: RootActionsTypes): InitialTodolistStateType => {
@@ -107,21 +103,19 @@ export const {
 //     ({type: CHANGE_TODOLIST_ENTITY_STATUS, todolistId, status}) as const
 // export const clearTodosDataAC = () => ({type: "CLEAR-DATA"} as const)
 
-export const getTodolistTC = (): RootThunkTypes => (dispatch) => {
+export const getTodolistTC = ()=> (dispatch:Dispatch) => {
     dispatch(setAppStatusAC({status: 'loading'}))
     todolistTaskApi.getTodolist().then(data => {
         dispatch(GetTodolistAC({todolists: data.data}))
         dispatch(setAppStatusAC({status: 'succeeded'}))
         return data.data
     })
-        .then((data) => {
-            data.forEach((tl) => {
-                dispatch(getTasksTC(tl.id))
-            })
+        .catch(error=>{
+            handleServerNetworkError(error,dispatch)
         })
 };
 
-export const createTodolistTC = (title: string) => (dispatch: Dispatch<RootActionsTypes>) => {
+export const createTodolistTC = (title: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC({status: 'loading'}))
     todolistTaskApi.createTodolist(title).then(data => {
         const todolist = data.data.data.item
@@ -129,15 +123,15 @@ export const createTodolistTC = (title: string) => (dispatch: Dispatch<RootActio
         dispatch(setAppStatusAC({status: 'succeeded'}))
     })
 };
-export const deleteTodolistTC = (todolistId: string) => (dispatch: Dispatch<RootActionsTypes>) => {
+export const deleteTodolistTC = (todolistId: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC({status: "loading"}))
-    dispatch(changeTodolistEntityStatus({todolistId: todolistId, status: "loading"}))
     dispatch(changeTodolistEntityStatus({todolistId: todolistId, status: "loading"}))
     todolistTaskApi.deleteTodolist(todolistId).then(data => {
         dispatch(RemoveTodolistAC({todolistId: todolistId}))
+        dispatch(setAppStatusAC({status:"succeeded"}))
     })
 };
-export const changeTodolistTitleTC = (todolistId: string, title: string) => (dispatch: Dispatch<RootActionsTypes>) => {
+export const changeTodolistTitleTC = (todolistId: string, title: string) => (dispatch: Dispatch) => {
     todolistTaskApi.updateTodolist(todolistId, title).then(data => {
         dispatch(ChangeTodolistTitleAC({id: todolistId, newTitle: title}))
     })

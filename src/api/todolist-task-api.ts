@@ -41,7 +41,7 @@ export const taskApi = {
         return instant.put<UpdateTaskModelType, AxiosResponse<TodolistResponseType<{ item: TaskType }>>>
         (`/todo-lists/${todolistId}/tasks/${taskId}`,model)
     },
-    deleteTask(todolistId: string,taskId:string) {
+    deleteTask(taskId:string,todolistId: string) {
         return instant.delete<TodolistResponseType>
         (`/todo-lists/${todolistId}/tasks/${taskId}`)
     }

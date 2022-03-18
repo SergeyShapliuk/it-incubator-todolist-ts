@@ -55,12 +55,12 @@ test("ChangeTodolistTitle", () => {
 
 test("AddTodolist", () => {
 
-    const action = AddTodolistAC({
+    const action = AddTodolistAC({todolist:{
         title:"New Title",
         id:"",
         addedDate:"",
         order:0
-    })
+    }})
     const AddTodolist = todolistReducer(startState, action)
 
     expect(AddTodolist[0].title).toBe("New Title")

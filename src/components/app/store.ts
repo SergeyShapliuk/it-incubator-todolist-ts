@@ -1,6 +1,6 @@
 import {combineReducers} from "redux";
-import todolistReducer, {TodolistActionsTypes} from "../features/TodolistList/Todolist/todolist-reducer";
-import tasksReducer, {TasksActionsTypes} from "../features/TodolistList/Todolist/tasks-reducer";
+import todolistReducer from "../features/TodolistList/Todolist/todolist-reducer";
+import tasksReducer from "../features/TodolistList/Todolist/tasks-reducer";
 import thunk, {ThunkAction} from "redux-thunk";
 import {AppActionsTypes, appReducer, setAppErrorAC} from "./app-reducer/AppReducer";
 import {authReducer, setIsLoggedIn} from "../../features/login/auth-reducer";
@@ -16,6 +16,8 @@ export const RootReducer=combineReducers({
     auth:authReducer
 })
 
+export type RootReducerType=typeof RootReducer
+
 export type RootStoreType=ReturnType<typeof RootReducer>
 
 export type RootThunkTypes<ReturnType=void>=ThunkAction<ReturnType, RootStoreType, unknown, RootActionsTypes>
@@ -25,15 +27,15 @@ export type RootThunkTypes<ReturnType=void>=ThunkAction<ReturnType, RootStoreTyp
 
 export const store=configureStore({
     reducer:RootReducer,
-    middleware:(getDefaultMiddleware)=>
+    middleware:getDefaultMiddleware=>
         getDefaultMiddleware().prepend(thunk)
 })
 
 export type RootActionsTypes= ReturnType<typeof setIsLoggedIn>
 | ReturnType<typeof setAppErrorAC>
 | AppActionsTypes
-| TasksActionsTypes
-| TodolistActionsTypes
+// | TasksActionsTypes
+// | TodolistActionsTypes
 
 // @ts-ignore
 window.store=store

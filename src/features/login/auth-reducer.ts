@@ -2,7 +2,6 @@ import {setAppErrorAC, setAppStatusAC} from "../../components/app/app-reducer/Ap
 import { RootThunkTypes} from "../../components/app/store";
 import {authApi, LoginRequestType} from "../../api/todolist-task-api";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
-import {clearTodosDataAC} from "../../components/features/TodolistList/Todolist/todolist-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 
@@ -62,7 +61,6 @@ export const logoutTC = ():RootThunkTypes => (dispatch) => {
             if (res.data.resultCode === 0) {
                 dispatch(setIsLoggedIn({ value: false }))
                 dispatch(setAppStatusAC({status:'succeeded'}))
-                dispatch(clearTodosDataAC())
             } else {
                 handleServerAppError(res.data, dispatch)
             }
