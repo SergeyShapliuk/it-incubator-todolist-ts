@@ -7,10 +7,10 @@ import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {useFormik} from "formik";
-import {useDispatch, useSelector} from "react-redux";
+import {FormikHelpers, useFormik} from "formik";
+import {useSelector} from "react-redux";
 import {loginTC} from "./auth-reducer";
-import {RootStoreType} from "../../components/app/store";
+import {RootStoreType, useRootDispatch} from "../../components/app/store";
 import {Navigate} from "react-router-dom";
 import {LoginRequestType} from "../../api/todolist-task-api";
 import {Omit} from "@material-ui/core";
@@ -20,10 +20,16 @@ import {Omit} from "@material-ui/core";
 //     password?: string
 //     rememberMe?: boolean
 // }
-
+type FormValuesType={
+    email:string
+    password:string
+    rememberMe:boolean
+}
 export const Login = () => {
 
-    const dispatch=useDispatch();
+    // const dispatch:RootDispatch=useDispatch();
+    const dispatch=useRootDispatch()
+
     const isLoggedIn=useSelector<RootStoreType,boolean>(state =>state.auth.isLoggedIn)
 
     const formik = useFormik({
@@ -46,9 +52,15 @@ export const Login = () => {
             }
             return errors;
         },
-            onSubmit: values => {
-            dispatch(loginTC(values));
-            formik.resetForm();
+            onSubmit: async (values:FormValuesType,formikHelpers:FormikHelpers<FormValuesType>) => {
+            const res=await dispatch(loginTC(values))
+                if(loginTC.rejected.match(res)){
+                    if(res.payload?.fieldsErrors?.length){
+                        const error=res.payload?.fieldsErrors[0]
+                      formikHelpers.setFieldError(error.field,error.error)
+                    }
+                }
+           // if(res === "bad) show error
         },
     })
     if(isLoggedIn){

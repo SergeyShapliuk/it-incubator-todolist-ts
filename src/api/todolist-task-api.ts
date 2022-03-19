@@ -64,10 +64,11 @@ export type TodolistType = {
     addedDate: string
     order: number
 };
+export type FieldErrorType={field:string,error:string}
 export type TodolistResponseType<D={}>={
     resultCode: number
     messages: string[]
-    fieldsErrors: Array<string>
+    fieldsErrors: Array<FieldErrorType>
     data: D
 };
 export type LoginRequestType={

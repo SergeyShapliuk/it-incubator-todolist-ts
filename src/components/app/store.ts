@@ -5,6 +5,7 @@ import thunk, {ThunkAction} from "redux-thunk";
 import {AppActionsTypes, appReducer, setAppErrorAC} from "./app-reducer/AppReducer";
 import {authReducer, setIsLoggedIn} from "../../features/login/auth-reducer";
 import {configureStore} from "@reduxjs/toolkit";
+import {useDispatch} from "react-redux";
 
 
 
@@ -30,6 +31,8 @@ export const store=configureStore({
     middleware:getDefaultMiddleware=>
         getDefaultMiddleware().prepend(thunk)
 })
+type RootDispatch=typeof store.dispatch
+export const useRootDispatch=()=>useDispatch<RootDispatch>()
 
 export type RootActionsTypes= ReturnType<typeof setIsLoggedIn>
 | ReturnType<typeof setAppErrorAC>
