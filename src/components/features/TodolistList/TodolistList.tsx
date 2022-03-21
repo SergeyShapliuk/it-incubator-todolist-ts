@@ -33,7 +33,7 @@ export const TodolistList: React.FC<PropsType> = ({demo = false}) => {
         dispatch(thunk)
     }, [])
     const removeTask = useCallback((id: string, todolistId: string) => {
-        dispatch(deleteTasksTC(id, todolistId))
+        dispatch(deleteTasksTC({taskId:id, todolistId:todolistId}))
         // let filteredTask = tasks[todolistId].filter(f => f.id !== id)
         // tasks[todolistId] = filteredTask
         // setTasks({...tasks})
@@ -47,13 +47,13 @@ export const TodolistList: React.FC<PropsType> = ({demo = false}) => {
         // }
     }, [])
     const addTask = useCallback((title: string, todolistId: string) => {
-        dispatch(createTasksTC(title, todolistId))
+        dispatch(createTasksTC({title, todolistId}))
         // let newTask = {id: v1(), title: title, isDone: false}
         // tasks[todolistId] = [newTask, ...tasks[todolistId]]
         // setTasks({...tasks})
     }, [])
     const changeStatus = useCallback((id: string, status: TaskStatuses, todolistId: string) => {
-        dispatch(updateTaskTC(id, {status}, todolistId))
+        dispatch(updateTaskTC({taskId:id, domainModel:{status}, todolistId:todolistId}))
         // let task = tasks[todolistId].find(f => f.id === id)
         // if (task) {
         //     task.isDone = isDone
@@ -76,8 +76,8 @@ export const TodolistList: React.FC<PropsType> = ({demo = false}) => {
         //     [newTodolist.id]: []
         // })
     }, [dispatch]);
-    const changeTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
-        dispatch(updateTaskTC(id, {title: newTitle}, todolistId))
+    const changeTitle = useCallback((todolistId: string,id: string, newTitle: string) => {
+        dispatch(updateTaskTC({todolistId:todolistId,taskId:id, domainModel:{title: newTitle}}))
         // let todolistTitle = tasks[todolistId].find(f => f.id === id)
         // if (todolistTitle) {
         //     todolistTitle.title = newTitle
@@ -85,7 +85,7 @@ export const TodolistList: React.FC<PropsType> = ({demo = false}) => {
         // }
     }, []);
     const changeTodolistTitle = useCallback((id: string, newTitle: string) => {
-        dispatch(changeTodolistTitleTC(id, newTitle))
+        dispatch(changeTodolistTitleTC({todolistId:id, title:newTitle}))
         // let todolistTitle = todolists.find(f => f.id === id)
         // if (todolistTitle) {
         //     todolistTitle.title = newTitle

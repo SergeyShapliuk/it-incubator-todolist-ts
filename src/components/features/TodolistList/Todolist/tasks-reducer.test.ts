@@ -1,8 +1,9 @@
-import tasksReducer, {addTaskAC, deleteTasksTC, getTasksTC, updateTaskAC} from "./tasks-reducer";
-import {AddTodolistAC, GetTodolistAC, RemoveTodolistAC} from "./todolist-reducer";
+import tasksReducer, {createTasksTC, deleteTasksTC, getTasksTC, updateTaskTC} from "./tasks-reducer";
+import {createTodolistTC, deleteTodolistTC, getTodolistTC} from "./todolist-reducer";
 
 import {TaskPriorities, TaskStatuses} from "../../../../api/todolist-task-api";
 import {TasksStateType} from "../../../app/App";
+
 
 let startState: TasksStateType = {};
 beforeEach(() => {
@@ -118,7 +119,7 @@ test("addTask", () => {
         priority: TaskPriorities.Low,
         completed: false
     }
-    const action=addTaskAC(task)
+    const action=createTasksTC.fulfilled(task,"requestId",{todolistId:task.todoListId,title:task.title})
     const addTaskState = tasksReducer(startState, action)
 
     expect(addTaskState["todolistId2"].length).toBe(4)
@@ -131,7 +132,8 @@ test("addTask", () => {
 });
 test("ChangeStatus", () => {
 
-    const action = updateTaskAC({id:"2", model:{status:TaskStatuses.New},todolistId:"todolistId2"})
+    const updateModel = {taskId: "2", model: {status: TaskStatuses.New}, todolistId: "todolistId2"};
+    const action = updateTaskTC.fulfilled(updateModel,"requestId",{taskId: "2", domainModel: {status: TaskStatuses.New}, todolistId: "todolistId2"})
     const changeStatusState = tasksReducer(startState, action)
 
     expect(changeStatusState["todolistId2"][1].status).toBe(TaskStatuses.New)
@@ -141,8 +143,8 @@ test("ChangeStatus", () => {
 })
 test("ChangeTitle", () => {
 
-
-    const action = updateTaskAC({id:"3", model:{title:"JS"}, todolistId:"todolistId2"})
+    const updateModel={taskId:"3", model:{title:"JS"}, todolistId:"todolistId2"}
+    const action = updateTaskTC.fulfilled(updateModel,"requestId",{taskId:"3", domainModel:{title:"JS"}, todolistId:"todolistId2"})
     const AddTodolistState = tasksReducer(startState, action)
 
     expect(AddTodolistState["todolistId2"][2].title).toBe("JS")
@@ -158,12 +160,13 @@ test("ChangeTitle", () => {
 });
 test("AddTodolist", () => {
 
-    const action = AddTodolistAC({todolist:{
-     id:"blabla",
-     title:"new todolist",
-     order:0,
-     addedDate:""
-    }})
+    const param = {todolist:{
+            id:"blabla",
+            title:"new todolist",
+            order:0,
+            addedDate:""
+        }};
+    const action = createTodolistTC.fulfilled(param,"requestId",param.todolist.title)
     const addTodolistState = tasksReducer(startState, action)
 
     const keys = Object.keys(addTodolistState)
@@ -180,7 +183,7 @@ test("AddTodolist", () => {
 
 test('property with todolistId should be deleted', () => {
 
-    const action = RemoveTodolistAC({todolistId:"todolistId2"});
+    const action = deleteTodolistTC.fulfilled({todolistId:"todolistId2"},"requestId","todolistId2");
 
     const endState = tasksReducer(startState, action)
 
@@ -191,16 +194,17 @@ test('property with todolistId should be deleted', () => {
     expect(endState["todolistId2"]).not.toBeDefined();
 });
 test('empty array should be when we set todolist', () => {
-    let action = GetTodolistAC({todolists:[
-        {
-            id: 'todolistId1', title: "What to learn", addedDate: "",
-            order: 0
-        },
-        {
-            id: 'todolistId2', title: "What to buy", addedDate: "",
-            order: 0
-        }
-    ]})
+    const params = {todolists:[
+            {
+                id: 'todolistId1', title: "What to learn", addedDate: "",
+                order: 0
+            },
+            {
+                id: 'todolistId2', title: "What to buy", addedDate: "",
+                order: 0
+            }
+        ]};
+    let action = getTodolistTC.fulfilled(params,"requestId")
 
     const endState = tasksReducer({}, action)
 

@@ -33,7 +33,7 @@ export const taskApi = {
         return instant.get<TaskResponseType>
         (`/todo-lists/${todolistId}/tasks`)
     },
-    createTask(todolistId: string,title:string) {
+    createTask(title:string,todolistId: string) {
         return instant.post<{ title: string }, AxiosResponse<TodolistResponseType<{ item: TaskType }>>>
         (`/todo-lists/${todolistId}/tasks`,{title})
     },
@@ -68,7 +68,7 @@ export type FieldErrorType={field:string,error:string}
 export type TodolistResponseType<D={}>={
     resultCode: number
     messages: string[]
-    fieldsErrors: Array<FieldErrorType>
+    fieldsErrors?: Array<FieldErrorType>
     data: D
 };
 export type LoginRequestType={

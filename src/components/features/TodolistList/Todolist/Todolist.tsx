@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect} from "react";
 import AddItemForm from "../../../addItemForm/AddItemForm";
 import EditableSpan from "../../../editableSpan/EditableSpan";
 import {Button, ButtonGroup, IconButton, List} from "@material-ui/core";
@@ -6,16 +6,18 @@ import {Delete} from "@material-ui/icons";
 import {Task} from "./Task/Task";
 import {TaskStatuses, TaskType} from "../../../../api/todolist-task-api";
 import {FilterValueType, TodolistDomainType} from "./todolist-reducer";
+import { useDispatch } from "react-redux";
+import {getTasksTC} from "./tasks-reducer";
 
 
 
-type PropsType = {
+export type PropsType = {
     todolist:TodolistDomainType
     tasks: TaskType[]
     changeFilter: (value: FilterValueType, todolistId: string) => void
     addTask: (title: string, todolistId: string) => void
     removeTask: (id: string, todolistId: string) => void
-    changeTitle: (id: string, newTitle: string, todolistId: string) => void
+    changeTitle: (todolistId: string,id: string, newTitle: string) => void
     changeStatus: (id: string, status: TaskStatuses, todolistId: string) => void
     removeTodolist: (todolistId: string) => void
     changeTodolistTitle: (id: string, newTitle: string) => void
@@ -24,17 +26,17 @@ type PropsType = {
 
 
 const Todolist = React.memo(({demo = false, ...props}: PropsType) => {
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
-    // useEffect(() => {
-    //     if (demo) {
-    //         return
-    //     } else {
-    //         const actionTC = getTasksTC(props.todolist.id)
-    //         dispatch(actionTC)
-    //     }
-    //
-    // }, [])
+    useEffect(() => {
+        if (demo) {
+            return
+        } else {
+            const actionTC = getTasksTC(props.todolist.id)
+            dispatch(actionTC)
+        }
+
+    }, [])
 
     const onClickStatusAll = useCallback(() =>
         props.changeFilter("all", props.todolist.id), [props.changeFilter, props.todolist.id])
@@ -62,8 +64,9 @@ const Todolist = React.memo(({demo = false, ...props}: PropsType) => {
     }
     return (
         <div>
-            <h3><EditableSpan title={props.todolist.title} onChange={onchangeTitle}/>
-                <IconButton color={"inherit"} disabled={props.todolist.entityStatus==="loading"}>
+            <h3><EditableSpan title={props.todolist.title} onChange={onchangeTitle}
+                             />
+                <IconButton color={"inherit"}  disabled={props.todolist.entityStatus==="loading"}>
                     <Delete onClick={() => {
                         removeTodolist()
                     }}/>

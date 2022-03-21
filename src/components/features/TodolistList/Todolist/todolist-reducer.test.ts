@@ -2,10 +2,9 @@ import {v1} from "uuid";
 
 import {FilterValueType} from "../../../app/AppExample";
 import todolistReducer, {
-    AddTodolistAC,
-    ChangeFilterAC, changeTodolistEntityStatus,
-    ChangeTodolistTitleAC, GetTodolistAC,
-    RemoveTodolistAC, TodolistDomainType
+    ChangeFilterAC, changeTodolistEntityStatus, changeTodolistTitleTC, createTodolistTC,
+    deleteTodolistTC, getTodolistTC,
+    TodolistDomainType
 } from "./todolist-reducer";
 import {RequestStatusType} from "../../../app/app-reducer/AppReducer";
 
@@ -37,7 +36,7 @@ test("ChangeFilter", () => {
 
 test("RemoveTodolist", () => {
 
-    const action = RemoveTodolistAC({todolistId:todolistId1})
+    const action = deleteTodolistTC.fulfilled({todolistId:todolistId1},"requestId",todolistId1)
     const removeTodolist = todolistReducer(startState, action)
 
     expect(removeTodolist[0].id).toBe(todolistId2)
@@ -46,7 +45,7 @@ test("RemoveTodolist", () => {
 
 test("ChangeTodolistTitle", () => {
 
-    const action = ChangeTodolistTitleAC({id:todolistId2, newTitle:"New Title"})
+    const action = changeTodolistTitleTC.fulfilled({id:todolistId2, newTitle:"New Title"},"requestId",{todolistId:todolistId2, title:"New Title"})
     const changeTodolistTitle = todolistReducer(startState, action)
 
     expect(changeTodolistTitle[0].title).toBe("What to learn")
@@ -55,12 +54,13 @@ test("ChangeTodolistTitle", () => {
 
 test("AddTodolist", () => {
 
-    const action = AddTodolistAC({todolist:{
-        title:"New Title",
-        id:"",
-        addedDate:"",
-        order:0
-    }})
+    const param = {todolist:{
+            title:"New Title",
+            id:"",
+            addedDate:"",
+            order:0
+        }};
+    const action = createTodolistTC.fulfilled(param,"requestId",param.todolist.title)
     const AddTodolist = todolistReducer(startState, action)
 
     expect(AddTodolist[0].title).toBe("New Title")
@@ -70,7 +70,7 @@ test("AddTodolist", () => {
 
 test("GetTodolist", () => {
 
-    const action = GetTodolistAC({todolists:startState})
+    const action = getTodolistTC.fulfilled({todolists:startState},"requestId")
     const GetTodolist = todolistReducer(startState, action)
 
     expect(GetTodolist.length).toBe(2)

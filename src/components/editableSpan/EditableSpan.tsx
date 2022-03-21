@@ -2,10 +2,13 @@ import React, {ChangeEvent, useState} from "react";
 import {IconButton, TextField} from "@material-ui/core";
 import {Edit} from "@material-ui/icons";
 
-type EditableSpanPropsType = {
 
+
+type EditableSpanPropsType = {
     title: string
     onChange: (newTitle: string) => void
+
+
 }
 
 const EditableSpan=React.memo((props: EditableSpanPropsType)=> {
@@ -27,9 +30,9 @@ const EditableSpan=React.memo((props: EditableSpanPropsType)=> {
     }
 
     return editMode
-        ? <TextField value={title} onChange={onChangeTitleHandler} onBlur={activeViewMode} autoFocus disabled/>
+        ? <TextField value={title} onChange={onChangeTitleHandler} onBlur={activeViewMode} autoFocus/>
         : <span onDoubleClick={activeEditMode}>{props.title}
-            <IconButton size={"small"} >
+            <IconButton size={"small"}>
             <Edit/>
         </IconButton>
             </span>
