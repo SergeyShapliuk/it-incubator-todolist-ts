@@ -47,7 +47,7 @@ export const Login = () => {
             }
             if (!values.password){
                 errors.password = 'Password required';
-            } else if (values.password.length < 7) {
+            } else if (values.password.length < 3) {
                 errors.password = 'Must be password at least 7 characters';
             }
             return errors;
