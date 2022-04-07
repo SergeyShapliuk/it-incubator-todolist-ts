@@ -65,8 +65,8 @@ const slice = createSlice({
 })
 export const getTodolistTC = createAsyncThunk('todolist/getTodolistTC', async (param, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
-    const data = await todolistTaskApi.getTodolist()
     try {
+        const data = await todolistTaskApi.getTodolist()
         thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
         return {todolists: data.data}
     } catch (error: any) {

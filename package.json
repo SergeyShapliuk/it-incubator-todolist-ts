@@ -1,6 +1,6 @@
 {
   "name": "it-incubator-todolist-ts",
-  "homepage": "https://SergeyShapliuk.github.io/todolist/",
+  "homepage": "https://sergeyshapliuk.github.io/todolist/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
