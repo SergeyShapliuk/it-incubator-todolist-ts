@@ -1,8 +1,8 @@
 {
   "name": "it-incubator-todolist-ts",
-  "homepage": "https://sergeyshapliuk.github.io/todolist/",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://sergeyshapliuk.github.io/todolist/",
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
