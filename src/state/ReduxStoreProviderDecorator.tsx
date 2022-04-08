@@ -51,7 +51,7 @@ export const storyBookStore =configureStore({
     middleware:getDefaultMiddleware => getDefaultMiddleware().prepend(thunk)
 });
 
-export const ReduxStoreProviderDecorator=(storyFn:()=>React.ReactNode)=>{
+export const ReduxStoreProviderDecorator=(storyFn:any)=>{
     return <Provider store={storyBookStore}>{storyFn()}</Provider>
 }
 

@@ -6,12 +6,12 @@ import {TaskType} from '../../api/todolist-task-api';
 import {TodolistList} from "../features/TodolistList/TodolistList";
 import {LinearProgress} from "@mui/material";
 import ErrorSnackbars from "../ErrorSnackBar/ErrorSnackBar";
-import {useDispatch, useSelector} from "react-redux";
 import {RootStoreType} from "./store";
 import {initializeAppTC, RequestStatusType} from "./app-reducer/AppReducer";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../../features/login/Login";
 import {logoutTC} from "../../features/login/auth-reducer";
+import {useDispatch, useSelector} from "react-redux";
 
 
 function App({demo = false}: PropsType) {
@@ -56,7 +56,7 @@ function App({demo = false}: PropsType) {
                     <Route path={"/"} element={<TodolistList demo={demo}/>}/>
                     <Route path={"/login"} element={<Login/>}/>
                     {/*<Route path={"/404"} element={<h1>404. Page not found</h1>}/>*/}
-                    {/*<Route path={"*"} element={<Navigate to={"/404"}/>}/>*/}
+                    <Route path={"*"} element={<Navigate to={"/"}/>}/>
                 </Routes>
 
             </Container>
